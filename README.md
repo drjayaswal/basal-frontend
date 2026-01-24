@@ -40,6 +40,54 @@ pnpm dev
 bun dev
 ```
 
+
+### Updating the Application Code
+
+To stage all changes for a commit, use the following command:
+```bash
+git add .
+```
+
+To commit all changes with a message, use:
+```bash
+git commit -m "specify the changes made"
+```
+
+To commit all changes with a message, use:
+```bash
+git commit -m "specify the changes made"
+```
+
+To build and push the Docker image providing the Google Client ID, use:
+```bash
+docker build \
+--build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=google-client-id \
+-t dhruv2k3/biasbreaker-frontend:latest .
+```
+
+
+To test the image locally, use:
+```bash
+docker run -p 3000:3000 dhruv2k3/biasbreaker-frontend
+```
+
+
+To send new layers to docker hub, use:
+```bash
+docker push dhruv2k3/biasbreaker-frontend:latest
+```
+
+to run the docker container via docker-compose.yml, use:
+```bash
+docker compose pull
+docker compose up -d
+
+#or
+
+docker compose up -d --build
+```
+
+
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 The application auto-updates as you edit files in `app/` directory.
@@ -50,6 +98,7 @@ The application auto-updates as you edit files in `app/` directory.
 npm run build
 npm start
 ```
+
 
 ## Contributing
 

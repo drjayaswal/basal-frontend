@@ -25,7 +25,10 @@ export default function ResumeDashboard() {
 
     const google = (window as any).google;
 
-    const handleConnectDrive = async (folderId:number, userAccessToken:string) => {
+    const handleConnectDrive = async (
+      folderId: number,
+      userAccessToken: string,
+    ) => {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-folder/${folderId}`,
@@ -67,7 +70,7 @@ export default function ResumeDashboard() {
         if (data.action === google.picker.Action.PICKED) {
           const folderId = data.docs[0].id;
           try {
-            await handleConnectDrive(folderId,token)
+            await handleConnectDrive(folderId, token);
           } catch (err) {
             setIsLoading((prev) => !prev);
             console.error("Backend fetch failed:", err);
@@ -130,7 +133,7 @@ export default function ResumeDashboard() {
                 <Button
                   size="lg"
                   className="flex items-center gap-1 h-13 text-lg font-medium hover:bg-white bg-white text-main border-0 hover:text-green-500 shadow-none transition-all duration-200 rounded-xl group"
-                  onClick={() => console.log("Login Clicked")}
+                  onClick={()=>setLoggedIn(true)}
                 >
                   <LogIn className="scale-150" />
                 </Button>
@@ -153,7 +156,7 @@ export default function ResumeDashboard() {
             variant="outline"
             size="lg"
             className="flex items-center gap-1 p-5 h-13 text-lg font-medium bg-white text-rose-500 border-0 hover:bg-rose-500 hover:text-white shadow-sm transition-all duration-200 rounded-xl group"
-            onClick={() => console.log("Login Clicked")}
+            onClick={()=>setLoggedIn(false)}
           >
             <LogOut className="scale-150" />
           </Button>
