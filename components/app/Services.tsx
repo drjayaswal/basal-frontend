@@ -1,5 +1,6 @@
 "use client";
 
+import { toPng } from "html-to-image";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -13,11 +14,13 @@ import {
   AlertCircle,
   Download,
   Paperclip,
+  Cross,
 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import Script from "next/script";
 import { FileData } from "@/lib/interface";
 import drive from "@/public/drive.png";
+import { AnalysisChart } from "../ui/radar";
 
 interface UserData {
   email: string;
@@ -30,16 +33,20 @@ interface ServicesProps {
 }
 
 export function Services({ user }: ServicesProps) {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [totalFiles, setTotalFiles] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
-  const [isPickerLoaded, setIsPickerLoaded] = useState(false);
-  const [extractedData, setExtractedData] = useState<FileData[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPickerLoaded, setIsPickerLoaded] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
-  const [totalFiles, setTotalFiles] = useState(0);
   const [processingStatus, setProcessingStatus] = useState("");
+  const [extractedData, setExtractedData] = useState<FileData[]>([]);
+  const [selectedFileData, setSelectedFileData] = useState<FileData | null>(
+    null,
+  );
   const progress =
     totalFiles > 0 ? Math.round((currentFileIndex / totalFiles) * 100) : 0;
   const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
@@ -103,19 +110,26 @@ export function Services({ user }: ServicesProps) {
       label: "Google Drive",
       action: "Connect",
       isImage: true,
+      isAvailable: true,
       handler: handleConnect,
     },
     {
       label: "Google Drive",
       action: "Watch",
       isImage: true,
+      isAvailable: false,
       handler: handleWatch,
     },
     {
       label: "Upload",
       action: "Folder",
+      isAvailable: true,
+      // Full classes for Folder (Indigo/Rose)
+      textGradient:
+        "group-hover:bg-linear-to-r group-hover:from-indigo-500 group-hover:via-rose-500 group-hover:to-indigo-500 group-hover:bg-clip-text group-hover:text-transparent",
+      barGradient: "bg-linear-to-r from-indigo-500 via-rose-500 to-indigo-500",
       icon: (
-        <Files className="scale-180 m-2 text-slate-500 group-hover:text-main transition-colors" />
+        <Files className="scale-180 m-2 text-slate-500 group-hover:text-indigo-500 transition-colors" />
       ),
       isImage: false,
       handler: openFolderPicker,
@@ -123,8 +137,13 @@ export function Services({ user }: ServicesProps) {
     {
       label: "Upload",
       action: "File",
+      isAvailable: true,
+      // Full classes for File (Fuchsia/Teal)
+      textGradient:
+        "group-hover:bg-linear-to-r group-hover:from-indigo-500 group-hover:via-teal-500 group-hover:to-indigo-500 group-hover:bg-clip-text group-hover:text-transparent",
+      barGradient: "bg-linear-to-r from-indigo-500 via-teal-500 to-indigo-500",
       icon: (
-        <File className="scale-180 m-2 text-slate-500 group-hover:text-main transition-colors" />
+        <File className="scale-180 m-2 text-slate-500 group-hover:text-indigo-500 transition-colors" />
       ),
       isImage: false,
       handler: openFilePicker,
@@ -167,54 +186,87 @@ export function Services({ user }: ServicesProps) {
       return;
     }
 
+    // 1. Filter valid files first to show the user the correct count in the toast
     const validFiles = Array.from(files).filter((file) => {
       const isAllowedType = ALLOWED_MIME_TYPES.includes(file.type);
       const isUnderSizeLimit = file.size <= MAX_FILE_SIZE_BYTES;
-      if (!isAllowedType) toast.warning(`${file.name}: Type not allowed`);
-      if (!isUnderSizeLimit) toast.warning(`${file.name} too large`);
       return isAllowedType && isUnderSizeLimit;
     });
 
-    if (validFiles.length === 0) return;
-
-    setIsProcessing(true);
-    setTotalFiles(validFiles.length);
-    setCurrentFileIndex(0);
-
-    for (let i = 0; i < validFiles.length; i++) {
-      const file = validFiles[i];
-      setCurrentFileIndex(i + 1);
-      setProcessingStatus(`Analyzing ${file.name}...`);
-
-      const formData = new FormData();
-      formData.append("files", file, file.webkitRelativePath || file.name);
-      if (user?.id) formData.append("userId", user.id);
-      if (description) formData.append("description", description);
-
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
-          {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-          },
-        );
-
-        if (response.ok) {
-          const rawData = await response.json();
-          const normalizedData = Array.isArray(rawData) ? rawData : [rawData];
-          setExtractedData((prev) => [...normalizedData, ...prev]);
-        }
-      } catch (error) {
-        console.error("Upload error:", error);
-      }
+    if (validFiles.length === 0) {
+      toast.error("No valid files found in selection");
+      return;
     }
 
-    setIsProcessing(false);
-    setProcessingStatus("");
-    e.target.value = "";
-    toast.success("Analysis Complete");
+    // 2. Trigger Confirmation Toast
+    toast(
+      `Analyze ${validFiles.length} ${validFiles.length > 1 ? "files" : "file"}?`,
+      {
+        description:
+          "This will consume credits and begin the analysis process.",
+        action: {
+          label: "Yes, Start",
+          onClick: async () => {
+            setIsProcessing(true);
+            setTotalFiles(validFiles.length);
+            setCurrentFileIndex(0);
+
+            for (let i = 0; i < validFiles.length; i++) {
+              const file = validFiles[i];
+              setCurrentFileIndex(i + 1);
+              setProcessingStatus(`Analyzing ${file.name}...`);
+
+              const formData = new FormData();
+              // Use webkitRelativePath for folder structure, fallback to name
+              formData.append(
+                "files",
+                file,
+                file.webkitRelativePath || file.name,
+              );
+              if (user?.id) formData.append("userId", user.id);
+              if (description) formData.append("description", description);
+
+              try {
+                const response = await fetch(
+                  `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+                  {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData,
+                  },
+                );
+
+                if (response.ok) {
+                  const rawData = await response.json();
+                  const normalizedData = Array.isArray(rawData)
+                    ? rawData
+                    : [rawData];
+                  setExtractedData((prev) => [...normalizedData, ...prev]);
+                } else {
+                  console.error(`Failed to upload ${file.name}`);
+                }
+              } catch (error) {
+                console.error("Upload error:", error);
+              }
+            }
+
+            setIsProcessing(false);
+            setProcessingStatus("");
+            // Clear inputs
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            if (folderInputRef.current) folderInputRef.current.value = "";
+            toast.success("All files processed successfully");
+          },
+        },
+        cancel: {
+          label: "Cancel",
+          onClick: () => {
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            if (folderInputRef.current) folderInputRef.current.value = "";
+          },
+        },
+      },
+    );
   };
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -297,58 +349,57 @@ export function Services({ user }: ServicesProps) {
     picker.setVisible(true);
     setIsLoading(true);
   };
-const resetHistory = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+  const resetHistory = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  toast("Permanently delete history?", {
-    description: "This action cannot be undone.",
-    action: {
-      label: "Yes, Clear All",
-      onClick: async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset-history`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`,
+    toast("Permanently delete history?", {
+      description: "This action cannot be undone.",
+      action: {
+        label: "Yes, Clear All",
+        onClick: async () => {
+          try {
+            const response = await fetch(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset-history`,
+              {
+                method: "DELETE",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               },
-            }
-          );
+            );
 
-          if (response.ok) {
-            setExtractedData([]);
-            toast.success("History permanently cleared");
-          } else {
-            toast.error("Failed to clear history on server");
+            if (response.ok) {
+              setExtractedData([]);
+              toast.success("History permanently cleared");
+            } else {
+              toast.error("Failed to clear history on server");
+            }
+          } catch (error) {
+            console.error("Reset error:", error);
+            toast.error("Could not reach the server");
           }
-        } catch (error) {
-          console.error("Reset error:", error);
-          toast.error("Could not reach the server");
-        }
+        },
       },
-    },
-    cancel: {
-      label: "Cancel",
-      onClick: () => console.log("Reset cancelled"),
-    },
-  });
-};
+      cancel: {
+        label: "Cancel",
+        onClick: () => console.log("Reset cancelled"),
+      },
+    });
+  };
   const handleDescriptionFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type (same logic as your other uploads)
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       toast.error("Invalid file type for Job Description");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file); // Ensure key name matches backend expectations
+    formData.append("file", file);
 
     setIsProcessing(true);
     setProcessingStatus("Extracting description from file...");
@@ -368,7 +419,6 @@ const resetHistory = async () => {
 
       if (response.ok) {
         const data = await response.json();
-        // Assuming backend returns { description: "extracted text..." }
         if (data.description) {
           setDescription(data.description);
           toast.success("Description updated from file");
@@ -382,14 +432,31 @@ const resetHistory = async () => {
     } finally {
       setIsProcessing(false);
       setProcessingStatus("");
-      e.target.value = ""; // Clear input so same file can be re-uploaded if needed
+      e.target.value = "";
     }
   };
+  const downloadChart = async () => {
+    if (chartRef.current === null) return;
 
+    try {
+      const dataUrl = await toPng(chartRef.current, {
+        cacheBust: true,
+        backgroundColor: "#fff",
+      });
+      const link = document.createElement("a");
+      link.download = `${selectedFileData?.filename || "analysis"}-chart.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.success("Chart downloaded as PNG");
+    } catch (err) {
+      toast.error("Failed to export chart");
+      console.error(err);
+    }
+  };
   if (isLoading && extractedData.length === 0) return <Spinner />;
 
   return (
-    <div className="flex flex-col items-center justify-start mt-20 p-4 sm:p-6">
+    <div className="flex flex-col items-center justify-start my-20 p-4 sm:p-6">
       <input
         type="file"
         ref={fileInputRef}
@@ -448,20 +515,19 @@ const resetHistory = async () => {
             <Button
               key={idx}
               variant="outline"
-              onClick={() => {
-                if (description) {
-                  item.handler();
-                } else {
-                  toast.info("Provide a description");
-                }
-              }}
-              className="
-          group relative flex flex-col items-start justify-between 
-          h-35 w-full max-w-45
-          p-5 border-0 shadow-md hover:shadow-2xl 
-          bg-white hover:bg-gray-50
-          transition-all duration-300 rounded-3xl rounded-t-none hover:rounded-t-3xl  overflow-hidden
-        "
+              disabled={!item.isAvailable}
+              onClick={() =>
+                description
+                  ? item.handler()
+                  : toast.info("Provide a description")
+              }
+              className={`
+        group relative flex flex-col items-start justify-between 
+        h-35 w-full max-w-45
+        p-5 border-0 ${item.isAvailable ? "shadow-md hover:shadow-2xl" : "shadow-none"}
+        bg-white hover:bg-gray-50
+        transition-all duration-300 rounded-3xl rounded-t-none hover:rounded-t-3xl overflow-hidden
+      `}
             >
               <div className="shrink-0">
                 {item.isImage ? (
@@ -473,31 +539,33 @@ const resetHistory = async () => {
                     className="grayscale group-hover:grayscale-0 transition-all duration-300"
                   />
                 ) : (
-                  <div className="text-slate-400 group-hover:text-main transition-colors">
-                    {item.icon}
-                  </div>
+                  <div className="transition-colors">{item.icon}</div>
                 )}
               </div>
 
               <div className="flex flex-col items-start text-left mt-4">
-                <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 group-hover:text-main">
+                <span
+                  className={`text-[10px] uppercase tracking-wider font-bold text-slate-400 transition-all duration-300 ${item.textGradient}`}
+                >
                   {item.label}
                 </span>
-                <span className="text-xl font-extrabold group-hover:text-main leading-tight">
+                <span
+                  className={`text-xl font-extrabold leading-tight text-slate-700 transition-all duration-300 ${item.textGradient}`}
+                >
                   {item.action}
                 </span>
               </div>
-              {item.isImage ? (
-                <div className="absolute bottom-0 left-0 w-full h-2.5 bg-linear-to-r from-emerald-500 via-amber-300 to-main scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left hover:rounded-none rounded-r-full" />
-              ) : (
-                <div className="absolute bottom-0 left-0 w-full h-2.5 bg-linear-to-r from-main/10 via-main/30  to-main scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-r-full" />
-              )}
+
+              <div
+                className={`absolute bottom-0 left-0 w-full h-2.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-r-full 
+        ${item.barGradient || "bg-linear-to-r from-emerald-500 via-main to-amber-500"}`}
+              />
             </Button>
           ))}
         </nav>
         {extractedData.length > 0 && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex items-center justify-between border-b border-b-slate-300 pb-4">
+            <div className="flex items-center justify-between border-b border-b-slate-200 pb-4">
               <h2 className="text-lg sm:text-xl font-bold text-slate-800">
                 Processing Results
               </h2>
@@ -526,33 +594,100 @@ const resetHistory = async () => {
               {extractedData.map((file, fileIdx) => (
                 <div
                   key={fileIdx}
-                  className="rounded-2xl sm:rounded-4xl px-2 sm:px-4 bg-white/5 border border-white/5 sm:border-0"
+                  onClick={() => setSelectedFileData(file)}
+                  className="group cursor-pointer rounded-3xl p-5 bg-white shadow-xs hover:shadow-md transition-all duration-300"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 px-2 pb-2">
-                    <h3 className="font-semibold text-main flex items-center gap-2 text-sm sm:text-base break-all">
-                      <File className="w-4 h-4 shrink-0" /> {file.filename}
-                    </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 space-y-6">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-main/5 rounded-xl">
+                            <File className="w-5 h-5 text-main" />
+                          </div>
+                          <h3 className="font-bold text-slate-800 text-sm sm:text-base break-all">
+                            {file.filename}
+                          </h3>
+                        </div>
 
-                    {file.ml_analysis && (
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold border ${
-                            file.ml_analysis.status === "High Match"
-                              ? "bg-emerald-50 text-emerald-700 border-0"
-                              : "bg-amber-50 text-amber-700 border-0"
-                          }`}
-                        >
-                          {file.ml_analysis.status === "High Match" ? (
-                            <CheckCircle2 className="w-3 h-3" />
-                          ) : (
-                            <AlertCircle className="w-3 h-3" />
-                          )}
-                          {Math.round(file.ml_analysis.match_score * 100)}%
-                          Match
+                        {file.ml_analysis && (
+                          <div className="flex items-center gap-3">
+                            <div
+                              className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold ${
+                                file.ml_analysis.status === "High Match"
+                                  ? "bg-emerald-50 text-emerald-700 border-0"
+                                  : "bg-amber-50 text-amber-700 border-0"
+                              }`}
+                            >
+                              {Math.round(file.ml_analysis.match_score * 100)}%
+                              Match
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {file.ml_analysis?.analysis_details && (
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+                        <div>
+                          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-2">
+                            Hits (
+                            {file.ml_analysis.analysis_details.total_matches}{" "}
+                            Total)
+                          </h4>
+                          <div className="flex flex-wrap gap-1.5">
+                            {file.ml_analysis.analysis_details.matched_keywords.map(
+                              (kw, i) => (
+                                <span
+                                  key={i}
+                                  className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] rounded border border-emerald-100"
+                                >
+                                  {kw}
+                                </span>
+                              ),
+                            )}
+                            {file.ml_analysis.analysis_details.total_matches >
+                              10 && (
+                              <span className="text-[9px] text-slate-400 italic font-medium">
+                                +{" "}
+                                {file.ml_analysis.analysis_details
+                                  .total_matches - 10}{" "}
+                                more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-2">
+                            Lags ({file.ml_analysis.analysis_details.total_lags}{" "}
+                            Total)
+                          </h4>
+                          <div className="flex flex-wrap gap-1.5">
+                            {file.ml_analysis.analysis_details.missing_keywords.map(
+                              (kw, i) => (
+                                <span
+                                  key={i}
+                                  className="px-2 py-0.5 bg-rose-50 text-rose-700 text-[10px] rounded border border-rose-100"
+                                >
+                                  {kw}
+                                </span>
+                              ),
+                            )}
+                            {file.ml_analysis.analysis_details.total_lags >
+                              10 && (
+                              <span className="text-[9px] text-slate-400 italic font-medium">
+                                +{" "}
+                                {file.ml_analysis.analysis_details.total_lags -
+                                  10}{" "}
+                                more
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -583,6 +718,58 @@ const resetHistory = async () => {
             <p className="mt-6 text-[10px] text-center text-slate-400 uppercase tracking-widest">
               Please do not close this tab
             </p>
+          </div>
+        </div>
+      )}
+      {/* VISUALIZATION POPUP */}
+      {selectedFileData && (
+        <div
+          className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-300"
+          onClick={() => setSelectedFileData(null)} // Close on background click
+        >
+          <div
+            className="relative w-full max-w-2xl bg-white rounded-[3rem] p-8 shadow-2xl animate-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h3 className="text-xl font-bold text-slate-800">
+                  {selectedFileData.filename}
+                </h3>
+                <p className="text-sm text-slate-500">
+                  In-depth skill visualization
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={downloadChart}
+                  className="rounded-xl border-0 hover:text-white hover:bg-emerald-500 text-emerald-500 bg-emerald-50"
+                >
+                  <Download className="w-4 h-4 mr-2" /> PNG
+                </Button>
+                <Button
+                  onClick={() => setSelectedFileData(null)}
+                  className="p-2 rounded-full hover:bg-rose-100 text-rose-500 transition-colors bg-transparent"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+            <div
+              ref={chartRef}
+              className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm"
+            >
+              <AnalysisChart
+                data={selectedFileData.ml_analysis.analysis_details.radar_data}
+                color={
+                  selectedFileData.ml_analysis.status === "High Match"
+                    ? "#10b981"
+                    : "#f59e0b"
+                }
+              />
+            </div>
           </div>
         </div>
       )}
