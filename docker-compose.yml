@@ -2,29 +2,25 @@ name: biasbreaker
 
 # --- Local Image Context ---
 
-services:
-  frontend:
-    container_name: frontend
-    build: .
-    ports:
-      - "3000:3000"
-    env_file: .env
-    restart: always
-
-networks:
-  default:
-    name: biasbreaker-network
+# services:
+#   frontend:
+#     container_name: frontend
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     env_file: .env
+#     restart: always
 
 
 # --- hub.docker Image Context ---
 
-# services:
-#   frontend:
-#     container_name: frontend
-#     image: dhruv2k3/biasbreaker-frontend:latest
-#     pull_policy: always
-#     ports:
-#       - "3000:3000"
-#     env_file:
-#       - .env
-#     restart: always
+services:
+  frontend:
+    container_name: frontend
+    image: dhruv2k3/biasbreaker-frontend:latest
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: always
