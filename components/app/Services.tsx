@@ -18,7 +18,6 @@ import { Spinner } from "@/components/ui/spinner";
 import Script from "next/script";
 import { FileData } from "@/lib/interface";
 import drive from "@/public/drive.png";
-import { formatDateTime } from "@/lib/utils";
 
 interface UserData {
   email: string;
@@ -41,7 +40,6 @@ export function Services({ user }: ServicesProps) {
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
   const [processingStatus, setProcessingStatus] = useState("");
-  const [file, setFile] = useState(null);
   const progress =
     totalFiles > 0 ? Math.round((currentFileIndex / totalFiles) * 100) : 0;
   const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
@@ -299,6 +297,44 @@ export function Services({ user }: ServicesProps) {
     picker.setVisible(true);
     setIsLoading(true);
   };
+const resetHistory = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  toast("Permanently delete history?", {
+    description: "This action cannot be undone.",
+    action: {
+      label: "Yes, Clear All",
+      onClick: async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset-history`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            setExtractedData([]);
+            toast.success("History permanently cleared");
+          } else {
+            toast.error("Failed to clear history on server");
+          }
+        } catch (error) {
+          console.error("Reset error:", error);
+          toast.error("Could not reach the server");
+        }
+      },
+    },
+    cancel: {
+      label: "Cancel",
+      onClick: () => console.log("Reset cancelled"),
+    },
+  });
+};
   const handleDescriptionFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -478,7 +514,7 @@ export function Services({ user }: ServicesProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setExtractedData([])}
+                  onClick={resetHistory}
                   className="text-slate-400 hover:text-rose-500 hover:bg-rose-50"
                 >
                   <Trash2 className="w-4 h-4 mr-2" /> Clear
