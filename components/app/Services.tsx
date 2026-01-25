@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Download,
+  Paperclip,
 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import Script from "next/script";
@@ -40,6 +41,7 @@ export function Services({ user }: ServicesProps) {
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
   const [processingStatus, setProcessingStatus] = useState("");
+  const [file, setFile] = useState(null);
   const progress =
     totalFiles > 0 ? Math.round((currentFileIndex / totalFiles) * 100) : 0;
   const MAX_FILE_SIZE_BYTES = 20 * 1024 * 1024;
@@ -86,7 +88,6 @@ export function Services({ user }: ServicesProps) {
 
     fetchHistory();
   }, [user]);
-
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isProcessing) {
@@ -132,33 +133,32 @@ export function Services({ user }: ServicesProps) {
     },
   ];
 
-const exportToCSV = () => {
-  if (extractedData.length === 0) return;
+  const exportToCSV = () => {
+    if (extractedData.length === 0) return;
 
-  const date = new Date().toISOString().split('T')[0];
+    const date = new Date().toISOString().split("T")[0];
 
-  const fileName = `${extractedData.length} ${extractedData.length >= 2 ? "files" : "file" } @${date}.csv`;
+    const fileName = `${extractedData.length} ${extractedData.length >= 2 ? "files" : "file"} @${date}.csv`;
 
-  const headers = ["Filename", "Match Score (%)", "Status"];
-  const rows = extractedData.map((file) => [
-    file.filename,
-    file.ml_analysis ? Math.round(file.ml_analysis.match_score * 100) : "N/A",
-    file.ml_analysis ? file.ml_analysis.status : "N/A",
-  ]);
+    const headers = ["Filename", "Match Score (%)", "Status"];
+    const rows = extractedData.map((file) => [
+      file.filename,
+      file.ml_analysis ? Math.round(file.ml_analysis.match_score * 100) : "N/A",
+      file.ml_analysis ? file.ml_analysis.status : "N/A",
+    ]);
 
-  const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", fileName); 
-  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  toast.success(`Exported: ${fileName}`);
-};
+    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`Exported: ${fileName}`);
+  };
   const handleSelection = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -224,7 +224,6 @@ const exportToCSV = () => {
     },
     scope: "https://www.googleapis.com/auth/drive.readonly",
   });
-
   const openPicker = (token: string) => {
     if (!isPickerLoaded) return alert("Picker API not loaded yet.");
     const biasbreakerToken = localStorage.getItem("token");
@@ -300,6 +299,56 @@ const exportToCSV = () => {
     picker.setVisible(true);
     setIsLoading(true);
   };
+  const handleDescriptionFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type (same logic as your other uploads)
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      toast.error("Invalid file type for Job Description");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file); // Ensure key name matches backend expectations
+
+    setIsProcessing(true);
+    setProcessingStatus("Extracting description from file...");
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-description`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        // Assuming backend returns { description: "extracted text..." }
+        if (data.description) {
+          setDescription(data.description);
+          toast.success("Description updated from file");
+        }
+      } else {
+        toast.error("Failed to extract description from file");
+      }
+    } catch (error) {
+      console.error("Extraction error:", error);
+      toast.error("Error connecting to server");
+    } finally {
+      setIsProcessing(false);
+      setProcessingStatus("");
+      e.target.value = ""; // Clear input so same file can be re-uploaded if needed
+    }
+  };
 
   if (isLoading && extractedData.length === 0) return <Spinner />;
 
@@ -330,13 +379,26 @@ const exportToCSV = () => {
             Manage your connections and folders
           </p>
 
-          <div className="max-w-md mx-auto mb-8">
-            <textarea
-              placeholder="Describe your requirements here to match..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 rounded-xl bg-main/2 border-2 border-transparent shadow-inner text-main focus:outline-none focus:border-main/10 placeholder:text-slate-400 transition-colors"
-            />
+          <div className="max-w-md mx-auto mb-8 flex gap-2 items-center justify-center">
+            <div className="flex items-center gap-2 w-full">
+              <textarea
+                placeholder="Describe your requirements here..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full p-3 rounded-xl bg-main/2 border-2 border-transparent shadow-inner text-main focus:outline-none focus:border-main/10 placeholder:text-slate-400 transition-colors"
+              />
+              <label className="flex cursor-pointer bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 text-center transition-colors shadow-inner">
+                <span className="text-sm text-slate-300">
+                  <Paperclip />
+                </span>
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleDescriptionFileChange}
+                  accept=".pdf,.docx,.txt"
+                />
+              </label>
+            </div>
           </div>
         </header>
         <Script
@@ -350,14 +412,13 @@ const exportToCSV = () => {
             <Button
               key={idx}
               variant="outline"
-              onClick={()=>{
-                if(description){
-                  item.handler()
-                }else{
-                  toast.info("Provide a description")
+              onClick={() => {
+                if (description) {
+                  item.handler();
+                } else {
+                  toast.info("Provide a description");
                 }
-              }
-              }
+              }}
               className="
           group relative flex flex-col items-start justify-between 
           h-35 w-full max-w-45
