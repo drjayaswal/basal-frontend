@@ -37,8 +37,8 @@ export default function RootLayout({
               "bg-main text-black border-none font-bold rounded-2xl shadow-2xl",
           }}
           icons={{
-            success: <CheckCircle2 className="text-black" size={18} />,
-            error: <AlertCircle className="text-rose-600" size={18} />,
+            success: <CheckCircle2 className="text-green-500" size={18} />,
+            error: <AlertCircle className="text-rose-500" size={18} />,
             info: <Info className="text-blue-500" size={18} />,
             loading: <Loader className="animate-spin text-black" size={18} />,
           }}
