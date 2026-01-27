@@ -73,6 +73,7 @@ export function Services({ user }: { user: any }) {
       console.error("History fetch error:", err);
     }
   };
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isProcessing) {
@@ -80,7 +81,6 @@ export function Services({ user }: { user: any }) {
     }
     return () => clearInterval(interval);
   }, [isProcessing, user]);
-
   useEffect(() => {
     setIsLoading(true);
     fetchHistory().finally(() => setIsLoading(false));
@@ -108,6 +108,8 @@ export function Services({ user }: { user: any }) {
 
     setIsProcessing(true);
     setIsLoading(true);
+    toast.dismiss(toastId);
+    toast.success("Collected " + validFiles.length + " Files");
 
     const formData = new FormData();
     validFiles.forEach((file) => formData.append("files", file));
@@ -127,9 +129,8 @@ export function Services({ user }: { user: any }) {
       );
 
       if (response.ok) {
-        // MAP LOCAL FILES TO PLACEHOLDERS
         const localPlaceholders: FileData[] = validFiles.map((f) => ({
-          id: Math.random().toString(), // Temp ID until fetchHistory runs
+          id: Math.random().toString(),
           filename: f.name,
           status: "processing",
           match_score: null,
@@ -139,9 +140,8 @@ export function Services({ user }: { user: any }) {
 
         setExtractedData((prev) => [...localPlaceholders, ...prev]);
         toast.dismiss(uploadToastId);
-        toast.success(`Upload started for ${validFiles.length} files`);
+        toast.success(`Uploaded ${validFiles.length} files`);
 
-        // Trigger a history fetch immediately to sync with real DB IDs
         fetchHistory();
       } else {
         toast.error("Upload failed", { id: uploadToastId });
@@ -181,20 +181,18 @@ export function Services({ user }: { user: any }) {
 
             const displayScore =
               file.match_score !== null
-                ? Math.round(
-                    file.match_score <= 1
-                      ? file.match_score * 100
-                      : file.match_score,
-                  )
+                ? file.match_score <= 1
+                  ? file.match_score
+                  : file.match_score
                 : "N/A";
 
             return [
               `"${file.id}"`,
-              `"${file.filename}"`,
+              `"${file.filename.split("/")[file.filename.split("/").length-1]}"`,
               file.status.toUpperCase(),
               displayScore,
-              `"${matched.join("; ")}"`,
-              `"${missing.join("; ")}"`,
+              `"${matched.join(", ")}"`,
+              `"${missing.join(", ")}"`,
               `"${new Date(file.created_at).toLocaleString()}"`,
             ];
           });
@@ -274,11 +272,11 @@ export function Services({ user }: { user: any }) {
 
               setExtractedData((prev) => [...placeholders, ...prev]);
               setIsProcessing(true);
-              toast.dismiss(toastId)
+              toast.dismiss(toastId);
               toast.success(responseData.message);
             } else {
               const errData = await response.json();
-              toast.dismiss(toastId)
+              toast.dismiss(toastId);
               console.error("422 Details:", errData);
               toast.error("Processing failed (422). Check console.", {
                 id: toastId,
