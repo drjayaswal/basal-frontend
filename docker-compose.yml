@@ -1,33 +1,13 @@
-# --- Local Image Context ---
 services:
   frontend:
+    image: dhruv2k3/biasbreaker-frontend:latest
     container_name: frontend
-    build:
-      context: .
-      args:
-        - NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
     ports:
       - "3000:3000"
-    env_file: .env
-    restart: always
+    env_file:
+      - .env
     networks:
       - biasbreaker-net
-
 networks:
   biasbreaker-net:
     driver: bridge
-# --- hub.docker Image Context ---
-
-# services:
-#   frontend:
-#     container_name: frontend
-#     image: dhruv2k3/biasbreaker-frontend:latest
-#     pull_policy: always
-#     ports:
-#       - "3000:3000"
-#     env_file:
-#       - .env
-#     restart: always
-#     networks:
-#       - biasbreaker-net
-
