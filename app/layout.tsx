@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "BiasBreaker",
   description: "AI-driven utility to ensure fair and unbiased selection",
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/bias-breaker-logo.png" },
 };
 
 export default function RootLayout({
@@ -48,6 +48,7 @@ export default function RootLayout({
         >
           <AuthGuard>
             <Navbar />
+            <div className="fixed -z-100 inset-0 bg-[linear-gradient(to_bottom,#edeaea_1px,transparent_80px)] bg-size-[4rem_4rem]" />
             <div className="min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden">
               {children}
             </div>

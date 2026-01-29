@@ -28,11 +28,10 @@ export function Settings({ user }: SettingsProps) {
   if (!user) return null;
 
   const username = user.email.split("@")[0];
-  const capitalizedUser = username.charAt(0).toUpperCase() + username.slice(1);
 
   return (
-    <div className="min-h-screen w-full text-main pt-24 px-4 sm:px-6 pb-12">
-      <div className="sm:min-w-3xl max-w-sm mx-auto w-full">
+    <div className="min-h-screen w-full text-main bg-white p-10 my-20 shadow-xl rounded-[2rem]">
+      <div className="sm:min-w-3xl min-w-xs mx-auto w-full">
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <h1 className="text-3xl sm:text-4xl font-black text-main tracking-tighter">
@@ -77,10 +76,6 @@ export function Settings({ user }: SettingsProps) {
                 <p className="text-sm sm:text-lg font-medium text-main/50 italic truncate max-w-50 sm:max-w-none">
                   {user.email}
                 </p>
-                <span className="text-xs sm:text-base opacity-50">as</span>
-                <h2 className="text-md sm:text-xl font-bold truncate">
-                  {capitalizedUser}
-                </h2>
               </div>
             </div>
           </section>
