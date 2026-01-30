@@ -6,6 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 import { Settings } from "@/components/app/Settings";
 import { getBaseUrl } from "@/lib/utils";
+import { Loader } from "lucide-react";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<{ email: string; id: string } | null>(null);
@@ -42,7 +43,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Loader className="w-full text-white animate-spin" />
   if (!user) return router.push("/connect")
 
   return (

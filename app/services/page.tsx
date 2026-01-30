@@ -2,10 +2,10 @@
 
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { Spinner } from "@/components/ui/spinner";
 import { Services } from "@/components/app/Services";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
+import { Loader } from "lucide-react";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<{ email: string; id: string } | null>(null);
@@ -42,7 +42,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Loader className="w-full text-white animate-spin" />
   if (!user) return router.push("/connect")
 
   return (

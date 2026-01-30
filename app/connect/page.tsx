@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { getBaseUrl } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff, MoveRight } from "lucide-react";
 
 export default function Connect() {
   const router = useRouter();
@@ -20,8 +19,6 @@ export default function Connect() {
     setLoading(true);
 
     try {
-      console.log(getBaseUrl());
-
       const response = await fetch(`${getBaseUrl()}/connect`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,13 +49,13 @@ export default function Connect() {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="relative z-10 w-full min-w-md mx-auto px-6">
+    <div className="flex flex-col items-center justify-center shadow-xl py-10 px-4 rounded-[5rem] relative overflow-hidden">
+      <div className="relative z-10 w-full min-w-md mx-auto px-6 ">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-main">Connect</h1>
-          <p className="text-main text-sm mt-2 font-medium">
-            Enter email and password to continue
-          </p>
+          <h1 className="text-5xl font-bold text-white">
+            Bias<span className="text-indigo-600">~</span>Breaker
+          </h1>
+          <p className="text-white/70 text-sm mt-2">connect to your account</p>
         </div>
 
         <form className="space-y-4 md:mx-0  mx-10" onSubmit={handleSubmit}>
@@ -69,7 +66,7 @@ export default function Connect() {
               value={email}
               autoComplete="off"
               onChange={(e) => setEmail(e.target.value)}
-              className="h-11 rounded-3xl text-main placeholder:text-shadow border-2 border-transparent focus-visible:border-main/30 focus-visible:ring-0 transition-all shadow-none"
+              className="h-11 rounded-none text-white placeholder:text-shadow border-2 border-transparent focus-visible:border-white/30 focus-visible:ring-0 transition-all shadow-none"
               required
             />
           </div>
@@ -81,14 +78,14 @@ export default function Connect() {
               autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-11 rounded-3xl text-main placeholder:text-shadow border-2 border-transparent focus-visible:border-main/30 focus-visible:ring-0 transition-all shadow-none"
+              className="h-11 rounded-none text-white placeholder:text-shadow border-2 border-transparent focus-visible:border-white/30 focus-visible:ring-0 transition-all shadow-none"
               required
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute cursor-pointer right-2 top-1.5 p-1.5 text-slate-400 hover:text-indigo-600 transition-colors rounded-xl hover:bg-indigo-50"
+              className="absolute cursor-pointer right-1.5 top-1.5 p-1.5 text-white transition-colors hover:bg-indigo-500"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -98,14 +95,27 @@ export default function Connect() {
               )}
             </button>
           </div>
-          <Button
+          <button
             type="submit"
-            variant={"ghost"}
-            className="w-full h-12 text-lg bg-transparent hover:bg-linear-to-r hover:from-white hover:via-main/80 hover:to-white hover:text-white text-main font-bold rounded-none duration-300 transform active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-colors mt-4"
             disabled={loading}
+            className="group/btn relative flex w-full items-center justify-between overflow-hidden bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-600 disabled:opacity-50"
           >
-            {loading ? "Connecting..." : "Continue"}
-          </Button>
+            <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest">
+              {loading ? "Connecting..." : "Continue"}
+            </span>
+            <div className="relative flex items-center overflow-hidden">
+              <MoveRight
+                className="transform transition-all duration-500 -translate-x-full opacity-0 
+                 group-hover/btn:translate-x-0 group-hover/btn:opacity-100"
+              />
+              <MoveRight
+                className="absolute transition-all duration-500 opacity-100 
+                 group-hover/btn:translate-x-full group-hover/btn:opacity-0"
+              />
+            </div>
+
+            <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/50 to-transparent transition-transform duration-1000 ease-in-out group-hover/btn:translate-x-full" />
+          </button>
         </form>
       </div>
     </div>

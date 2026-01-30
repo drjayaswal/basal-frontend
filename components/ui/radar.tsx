@@ -2,12 +2,11 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 
 export function AnalysisChart({ data, color }: { data: any[], color: string }) {
   return (
-    <div className="w-full h-64 flex items-center justify-center">
+    <div className="w-full h-64 flex items-center bg-indigo-700 justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-          <PolarGrid stroke="#e2e8f0" />
+          <PolarGrid stroke="white" />
           
-          {/* Key Fix: Force the chart to always use 0 to 100 scale */}
           <PolarRadiusAxis 
             angle={30} 
             domain={[0, 100]} 

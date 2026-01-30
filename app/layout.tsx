@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "BiasBreaker",
   description: "AI-driven utility to ensure fair and unbiased selection",
-  icons: { icon: "/bias-breaker-logo.png" },
+  icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({
@@ -28,10 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased select-none`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased select-none bg-black`}
       >
         <Toaster
           position="bottom-right"
+          closeButton
+          theme="dark"
           toastOptions={{
             className:
               "bg-main text-black border-none font-bold rounded-2xl shadow-2xl",
@@ -48,8 +50,7 @@ export default function RootLayout({
         >
           <AuthGuard>
             <Navbar />
-            <div className="fixed -z-100 inset-0 bg-[linear-gradient(to_bottom,#edeaea_1px,transparent_80px)] bg-size-[4rem_4rem]" />
-            <div className="min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden">
+            <div className="min-h-screen py-20 w-full flex flex-col items-center justify-center overflow-x-hidden font-mono">
               {children}
             </div>
             <Footer />
