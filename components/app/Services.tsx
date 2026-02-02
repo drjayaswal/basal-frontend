@@ -13,19 +13,18 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  X,
   Loader,
   RefreshCcw,
   Delete,
   Folder,
   Lock,
   DownloadCloud,
+  Cloud,
 } from "lucide-react";
 import Script from "next/script";
 import { FileData } from "@/lib/interface";
 import { AnalysisChart } from "../ui/radar";
 import { cn, getBaseUrl } from "@/lib/utils";
-import Image from "next/image";
 import Loading from "../ui/loading";
 
 export function Services({ user }: { user: any }) {
@@ -398,23 +397,20 @@ export function Services({ user }: { user: any }) {
             className={`w-1.5 h-1.5 rounded-full flex gap-4 items-center ${dotColor}`}
           />
           {title}
-          <div>{total}</div>
+          <div>{skills.length}({total})</div>
         </h4>
-        <span className="text-[9px] font-mono text-white/40">
-          {skills.length} displayed
-        </span>
       </div>
       <div className="flex flex-wrap gap-1.5">
         {skills.map((kw, i) => (
           <span
             key={i}
-            className="px-2.5 py-1 bg-white/5 border border-white/10 text-white/70 text-[11px] rounded-md"
+            className="px-2.5 py-1 bg-white/5 border border-white/10 text-white/50 text-[11px] rounded-md"
           >
             {kw}
           </span>
         ))}
         {total > skills.length && (
-          <span className="px-2.5 py-1 text-white/30 text-[11px] font-mono">
+          <span className="px-2.5 py-1 text-white/30 text-[11px] tracking-tighter">
             + {total - skills.length} more
           </span>
         )}
@@ -482,12 +478,12 @@ export function Services({ user }: { user: any }) {
                 {description && (
                   <button
                     onClick={() => setDescription("")}
-                    className="p-2 bg-black cursor-pointer text-white hover:bg-red-500 transition-all"
+                    className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-red-500 transition-all"
                   >
                     <Delete className="w-5 h-5" />
                   </button>
                 )}
-                <label className="p-2 bg-black cursor-pointer text-white hover:bg-indigo-500 transition-all">
+                <label className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-indigo-500 transition-all">
                   <Paperclip className="w-5 h-5" />
                   <input
                     type="file"
@@ -508,13 +504,7 @@ export function Services({ user }: { user: any }) {
                 {
                   title: "Google Drive",
                   icon: (
-                    <Image
-                      src="/drive.png"
-                      alt="D"
-                      width={20}
-                      height={20}
-                      className="invert group-hover:invert-0"
-                    />
+                    <Cloud className="w-5 h-5 text-white group-hover:text-white" />
                   ),
                   handler: () =>
                     description.trim()
@@ -586,7 +576,7 @@ export function Services({ user }: { user: any }) {
           </div>
         </div>
         <div className="lg:col-span-4 flex flex-col h-full bg-black border-l border-white/13 overflow-hidden">
-          <div className="px-6 py-[16.1px] flex items-center justify-between bg-black/90 backdrop-blur-md z-20 border-y border-white/13 shrink-0">
+          <div className="px-6 py-[16.1px] flex items-center justify-between z-20 border-y border-white/13 shrink-0">
             <div className="flex items-baseline gap-3">
               <h2 className="text-[11px] font-black tracking-[0.2em] uppercase text-white/40">
                 Analysis
@@ -597,7 +587,7 @@ export function Services({ user }: { user: any }) {
                 </span>
               </div>
             </div>
-            <div className="flex items-center bg-white/5 border border-white/13 p-0.5">
+            <div className="flex items-center border border-white/13 p-0.5">
               <button
                 onClick={fetchHistory}
                 title="Sync History"
@@ -652,7 +642,7 @@ export function Services({ user }: { user: any }) {
                       transition={{ delay: idx * 0.05 }}
                       onClick={() => isInteractive && setSelectedFileData(file)}
                       className={cn(
-                        "p-[10.7px] group relative overflow-hidden transition-all",
+                        "p-[10.7px] py-[14.80px] group relative overflow-hidden transition-all border-b border-white/10",
                         isInteractive
                           ? "cursor-pointer hover:bg-indigo-600/50"
                           : "opacity-60",
@@ -665,14 +655,7 @@ export function Services({ user }: { user: any }) {
                             <h4 className="text-sm text-white/50 group-hover:text-white font-bold transition-colors duration-500 truncate pr-4">
                               {file.filename.split("/").pop()}
                             </h4>
-                            <div
-                              className={cn(
-                                "text-[8px] flex items-center font-black uppercase gap-1 mt-1 px-1.5 py-0.5",
-                                config.bg,
-                              )}
-                            >
-                              {config.icon}
-                            </div>
+                            <div className={cn(config.bg)}> {config.icon} </div>
                           </div>
                         </div>
 
@@ -715,11 +698,11 @@ export function Services({ user }: { user: any }) {
         {selectedFileData && (
           <>
             <motion.div
+              exit={{ opacity: 1 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onClick={() => setSelectedFileData(null)}
-              className="fixed inset-0 backdrop-blur-md h-full w-full z-30"
+              className="fixed inset-0 backdrop-blur-xs bg-white/5 h-full w-full z-30"
             />
             <div
               className="fixed inset-0 grid place-items-center z-100 p-4"
@@ -731,7 +714,7 @@ export function Services({ user }: { user: any }) {
                 className="w-full max-w-6xl h-fit max-h-[90vh] bg-black border border-white/20 flex flex-col overflow-hidden"
               >
                 <div className="py-8 px-10 overflow-y-auto no-scrollbar">
-                  <div className="mb-4 pb-2 border-t border-white/5 flex gap-2 items-center text-[15px] font-mono text-white/50">
+                  <div className="mb-4 pb-2 border-b border-white/20 flex gap-2 items-center text-[15px] font-mono text-white/50">
                     <span className="text-white/20 text-sm">Success on</span>
                     {selectedFileData.filename}
                     <span className="text-white/20 text-sm">with</span>
@@ -755,7 +738,7 @@ export function Services({ user }: { user: any }) {
                                 </span>
                               </>
                             )}{" "}
-                            <span className="text-white/20 text-sm">Match</span>
+                            <span className="text-white/20 text-sm">match</span>
                           </div>
                         </div>
                       )}

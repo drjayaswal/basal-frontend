@@ -36,28 +36,28 @@ export function Settings({ user }: SettingsProps) {
   if (!user) return null;
 
   return (
-    <div className="w-full text-white bg-black py-14 mt-4.25 flex-col">
+    <div className="w-full text-white bg-black border-y border-white/12 py-14 mt-4.25 flex-col">
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">
             Settings
           </h1>
 
-          <div className="flex items-center w-full sm:w-auto border border-white/30 px-1 py-0.5">
+          <div className="flex items-center w-full sm:w-auto border border-white/12 px-1 py-0.5">
             <button
               onClick={() => router.push("/")}
               className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-teal-600"
             >
               <Home className="w-5 h-5" />
             </button>
-            <div className="h-12 bg-white/30 w-px mx-1"/>
+            <div className="h-12 bg-white/12 w-px mx-1" />
             <button
               onClick={() => router.push("/services")}
               className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-indigo-600"
             >
               <Wrench className="w-5 h-5" />
             </button>
-            <div className="h-12 bg-white/30 w-px mx-1"/>
+            <div className="h-12 bg-white/12 w-px mx-1" />
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-rose-600"
@@ -69,7 +69,7 @@ export function Settings({ user }: SettingsProps) {
         <div className="space-y-6 pt-6">
           <section className="space-y-0.5">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
                 <User size={24} />
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-4 overflow-hidden">
@@ -79,7 +79,7 @@ export function Settings({ user }: SettingsProps) {
               </div>
             </div>
             <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
                 <Clock size={24} />
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-4 overflow-hidden">

@@ -33,7 +33,7 @@ export default function HeroSection() {
           background tasks<br/> Upload your datasets and let the backend bridge the gap between 
           talent and requirements while you manage the workflow.
         </motion.p>
-        <div className="flex flex-wrap items-center justify-center">
+        <div className="flex flex-wrap items-center justify-center bg-black w-fit mx-auto py-[6.9px]">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}>
             <AnimatedButton
               label="Services" 

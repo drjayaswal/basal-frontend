@@ -1,12 +1,14 @@
 "use client";
 
-import { Github, Linkedin } from "lucide-react";
+import { Cog, Github, Linkedin, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { devData } from "@/lib/const";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { useRouter } from "next/navigation";
 
 const Developers = () => {
+  const router = useRouter();
   return (
     <div>
       <div className="max-w-4xl mx-auto text-center mb-19.5 relative z-10">
@@ -18,7 +20,7 @@ const Developers = () => {
         {devData.map((dev, index) => (
           <div
             key={index}
-            className="group relative p-8 transition-all duration-300 hover:border-indigo-500 shadow-2xl"
+            className="group relative p-8 transition-all duration-300"
           >
             <div className="flex flex-col items-center sm:items-start sm:flex-row gap-8">
               <div className="relative shrink-0">
@@ -64,7 +66,7 @@ const Developers = () => {
             </div>
           </div>
         ))}
-        <div className="bg-black w-fit px-3 py-1.75">
+        <div className="bg-black w-fit flex items-center px-3 py-1.75">
           <AnimatedButton
             label="CONTRIBUTION"
             onClick={() =>
@@ -74,6 +76,19 @@ const Developers = () => {
               )
             }
             Icon={Github}
+          />
+        </div>
+        <div className="bg-black w-fit flex items-center px-3 py-1.75">
+          <AnimatedButton
+            label="Settings"
+            onClick={() => router.push("/settings")}
+            Icon={Cog}
+            rotateIcon
+          />
+          <AnimatedButton
+            label="Services"
+            onClick={() => router.push("/services")}
+            Icon={Wrench}
           />
         </div>
       </div>
