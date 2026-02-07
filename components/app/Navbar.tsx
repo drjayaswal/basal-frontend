@@ -21,7 +21,7 @@ const Navbar = () => {
       </div>
       <button
         onClick={() => router.push("/settings")}
-        className="p-2 hover:rotate-90 transition-all bg-transparent shadow-none text-white/50 cursor-pointer"
+        className="p-2 hover:rotate-90 transition-all bg-transparent shadow-none text-white cursor-pointer"
       >
         <Cog size={30} />
       </button>

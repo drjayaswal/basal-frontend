@@ -3,22 +3,24 @@
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Settings } from "@/components/app/Settings";
 import { getBaseUrl } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
+import Chat from "@/components/app/Chat";
 
-export default function ProfilePage() {
+export default function ChatPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
+  
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
 
-      if (!token) return;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
       try {
         const res = await fetch(`${getBaseUrl()}/auth/me`, {
@@ -30,6 +32,7 @@ export default function ProfilePage() {
           setUser(data);
         } else {
           toast.error("Session expired");
+          localStorage.removeItem("token");
         }
       } catch (err) {
         toast.error("Network error");
@@ -40,13 +43,19 @@ export default function ProfilePage() {
 
     fetchProfile();
   }, []);
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/connect");
+    }
+  }, [loading, user, router]);
 
-  if (loading) return <Loading/>
-  if (!user) return router.push("/connect");
+  if (loading) return <Loading />;
+
+  if (!user) return null;
 
   return (
     <div>
-      <Settings user={user} />
+      <Chat user={user} />
     </div>
   );
 }

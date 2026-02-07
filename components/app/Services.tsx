@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  Loader,
+  Loader2,
   RefreshCcw,
   Delete,
   Folder,
@@ -21,7 +21,7 @@ import {
   DownloadCloud,
   Cloud,
   BadgeIndianRupee,
-  ArrowUpSquare,
+  ApertureIcon,
 } from "lucide-react";
 import Script from "next/script";
 import { FileData, UserData } from "@/lib/interface";
@@ -91,7 +91,7 @@ export function Services({ user }: { user: UserData }) {
         action: {
           label: "Upgrade",
           onClick: () => {
-            const toastId = toast.loading("Directing...");
+            const toastId = toast.loading("Redirecting...");
             setTimeout(() => {
               toast.dismiss(toastId);
               router.push("/upgrade");
@@ -147,9 +147,9 @@ export function Services({ user }: { user: UserData }) {
 
         setExtractedData((prev) => [...localPlaceholders, ...prev]);
         toast.dismiss(uploadToastId);
-        const data = await response.json()
+        const data = await response.json();
         toast.success(data.message);
-        
+
         fetchHistory();
       } else {
         toast.error("Upload failed", { id: uploadToastId });
@@ -346,7 +346,7 @@ export function Services({ user }: { user: UserData }) {
         };
       case "processing":
         return {
-          icon: <Loader className="w-4 h-4 animate-spin" />,
+          icon: <Loader2 className="w-4 h-4 animate-spin" />,
           bg: "text-indigo-500",
         };
       case "failed":
@@ -367,7 +367,7 @@ export function Services({ user }: { user: UserData }) {
         action: {
           label: "Upgrade",
           onClick: () => {
-            const toastId = toast.loading("Directing...");
+            const toastId = toast.loading("Redirecting...");
             setTimeout(() => {
               toast.dismiss(toastId);
               router.push("/upgrade");
@@ -532,12 +532,12 @@ export function Services({ user }: { user: UserData }) {
               </div>
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-3.75">
             <div className="flex gap-2 items-center">
               <h3 className="text-[12px] font-black text-white/40 uppercase tracking-[0.2em] px-1">
                 Source Selection
               </h3>
-              <div className="flex items-center gap-2 px-3 py-1.5">
+              <div className="flex items-center gap-2 px-3">
                 <BadgeIndianRupee className="w-4 h-4 text-white" />
                 <span className="text-[11px] font-medium text-white tracking-widest">
                   1/file
@@ -556,7 +556,7 @@ export function Services({ user }: { user: UserData }) {
                       action: {
                         label: "Upgrade",
                         onClick: () => {
-                          const toastId = toast.loading("Directing...");
+                          const toastId = toast.loading("Redirecting...");
                           setTimeout(() => {
                             toast.dismiss(toastId);
                             router.push("/upgrade");
@@ -621,7 +621,7 @@ export function Services({ user }: { user: UserData }) {
                         action: {
                           label: "Upgrade",
                           onClick: () => {
-                            const toastId = toast.loading("Directing...");
+                            const toastId = toast.loading("Redirecting...");
                             setTimeout(() => {
                               toast.dismiss(toastId);
                               router.push("/upgrade");
@@ -682,7 +682,7 @@ export function Services({ user }: { user: UserData }) {
                     action: {
                       label: "Upgrade",
                       onClick: () => {
-                        const toastId = toast.loading("Directing...");
+                        const toastId = toast.loading("Redirecting...");
                         setTimeout(() => {
                           toast.dismiss(toastId);
                           router.push("/upgrade");
@@ -695,6 +695,46 @@ export function Services({ user }: { user: UserData }) {
               >
                 <span className="text-[12px]">Upgrade</span>
               </button>
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => {
+                    if (user.credits == 0) {
+                      toast.info("Credits Exausted", {
+                        action: {
+                          label: "Upgrade",
+                          onClick: () => {
+                            const toastId = toast.loading("Redirecting...");
+                            setTimeout(() => {
+                              toast.dismiss(toastId);
+                              router.push("/upgrade");
+                            }, 1500);
+                          },
+                        },
+                      });
+                    } else {
+                      const toastId = toast.loading("Redirecting...");
+                      setTimeout(() => {
+                        toast.dismiss(toastId);
+                        router.push("/biasbreakerai");
+                      }, 1500);
+                    }
+                  }}
+                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-indigo-600"
+                >
+                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-900 via-rose-400 to-rose-900" />
+                  <span className="text-[12px] relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-2">
+                    AI
+                  </span>
+                  <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
+                    <div className="absolute group-hover/btn:rotate-180 transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
+                      <ApertureIcon />
+                    </div>
+                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:rotate-180 group-hover/btn:opacity-0 flex items-center justify-center">
+                      <ApertureIcon />
+                    </div>
+                  </div>
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center border border-white/13 p-0.5">
@@ -769,27 +809,28 @@ export function Services({ user }: { user: UserData }) {
                           </div>
                         </div>
 
-                        {isProcessing || file.match_score !== null && (
-                          <div className="text-right shrink-0">
-                            <div
-                              className={cn(
-                                "text-xl font-black transition-colors duration-500",
-                                file.match_score >= 0.8
-                                  ? "text-emerald-500/50 group-hover:text-emerald-500"
-                                  : file.match_score >= 0.5
-                                    ? "text-amber-500/50 group-hover:text-amber-500"
-                                    : isProcessing
-                                      ? "text-indigo-500/50 group-hover:text-indigo-500"
-                                      : "text-rose-500/50 group-hover:text-rose-500",
-                              )}
-                            >
-                              {Math.floor(file.match_score)}%
+                        {isProcessing ||
+                          (file.match_score !== null && (
+                            <div className="text-right shrink-0">
+                              <div
+                                className={cn(
+                                  "text-xl font-black transition-colors duration-500",
+                                  file.match_score >= 0.8
+                                    ? "text-emerald-500/50 group-hover:text-emerald-500"
+                                    : file.match_score >= 0.5
+                                      ? "text-amber-500/50 group-hover:text-amber-500"
+                                      : isProcessing
+                                        ? "text-indigo-500/50 group-hover:text-indigo-500"
+                                        : "text-rose-500/50 group-hover:text-rose-500",
+                                )}
+                              >
+                                {Math.floor(file.match_score)}%
+                              </div>
+                              <div className="text-[8px] text-white/30 group-hover:text-white/70 transition-colors duration-500 uppercase tracking-tighter font-bold">
+                                Match
+                              </div>
                             </div>
-                            <div className="text-[8px] text-white/30 group-hover:text-white/70 transition-colors duration-500 uppercase tracking-tighter font-bold">
-                              Match
-                            </div>
-                          </div>
-                        )}
+                          ))}
                       </div>
                       <div
                         className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full"

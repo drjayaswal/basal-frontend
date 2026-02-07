@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getBaseUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";

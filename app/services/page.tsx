@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Services } from "@/components/app/Services";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
 

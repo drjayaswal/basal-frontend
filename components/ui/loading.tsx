@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Loading = () => {
@@ -13,7 +13,7 @@ const Loading = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-9999 flex flex-col items-center justify-center">
+    <div className="fixed inset-0 z-9999 bg-black flex flex-col items-center justify-center">
       <div 
         className="absolute inset-0 opacity-10 pointer-events-none" 
         style={{ 
@@ -29,7 +29,7 @@ const Loading = () => {
           transition={{ duration: 0.5 }}
           className="relative"
         >
-          <Loader className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} />
+          <Loader2 className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} />
         </motion.div>
       </div>
     </div>

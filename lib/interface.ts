@@ -22,6 +22,35 @@ export interface UserData {
   credits: number | 0;
 }
 
+export interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface Source {
+  id: string;
+  source_name: string;
+  source_type: "video" | "document";
+  status: "pending" | "processing" | "completed" | "failed";
+  unique_key: string;
+  user_id: string;       
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Message {
+  id?: string;
+  role: "user" | "assistant";
+  content: string;
+  created_at?: string;
+}
+
+export interface Conversation {
+  id: string;
+  title: string;
+  created_at: string;
+}
+
 export interface SettingsProps {
   user: UserData | null;
 }

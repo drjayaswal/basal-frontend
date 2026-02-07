@@ -60,7 +60,7 @@ const UpgradePage = () => {
 
             <AnimatedButton
               label={plan.buttonText}
-              onClick={() => toast.loading("Directing to Payment")} 
+              onClick={() => toast.loading("Redirecting to Payment")} 
               Icon={Bitcoin}
             />
           </div>
