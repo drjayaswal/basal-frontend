@@ -117,9 +117,9 @@ export default function Conversation({ user }: { user: UserData }) {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(user.credits == 0){
-      toast.info("Insufficient credits. Please top up your account")
-      return
+    if (user.credits == 0) {
+      toast.info("Insufficient credits. Please top up your account");
+      return;
     }
     if (!input.trim() || !selectedSourceId) return;
     const userMsg = input.trim();
@@ -141,7 +141,7 @@ export default function Conversation({ user }: { user: UserData }) {
         }),
       });
       const data = await response.json();
-      if (data.status_code=402) {
+      if ((data.status_code = 402)) {
         toast.info(data.detail);
         return;
       }
@@ -168,7 +168,7 @@ export default function Conversation({ user }: { user: UserData }) {
       className="flex w-full text-slate-200 bg-black font-sans overflow-hidden"
       style={{ height: `calc(100vh - ${NAV_HEIGHT})`, marginTop: NAV_HEIGHT }}
     >
-      <aside className="w-70 mb-12 hidden md:flex flex-col border-r border-white/15 bg-black">
+      <aside className="w-70 mb-12 hidden md:flex flex-col border-r border-white/15 bg-transparent">
         <div className="p-6 px-2">
           <span className="text-[10px] uppercase font-bold text-white/30 border-b border-white/20">
             Source(s) [{sources.length.toString().padStart(2, "0")}]
@@ -210,7 +210,14 @@ export default function Conversation({ user }: { user: UserData }) {
             Conversation(s) [{conversations.length.toString().padStart(2, "0")}]
           </span>
           <div className="mt-4">
-            {conversations.length > 0 ? (
+            {isSidebarLoading ? (
+              [1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-9 w-full bg-white/10 animate-pulse mb-px"
+                />
+              ))
+            ) : conversations.length > 0 ? (
               conversations.map((c) => (
                 <button
                   key={c.id}
@@ -233,7 +240,7 @@ export default function Conversation({ user }: { user: UserData }) {
           </div>
         </div>
         <div
-          className={`pt-2 pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/20"}`}
+          className={`pt-[8.5px] pb-4 px-2 mt-auto ${sources.length > 0 && "border-t border-white/15"}`}
         >
           {sources.length > 0 && (
             <button
@@ -251,13 +258,13 @@ export default function Conversation({ user }: { user: UserData }) {
       <main className="flex-1 flex flex-col relative">
         <div
           ref={scrollRef}
-          className="flex-1 mb-30 overflow-y-auto p-6 md:p-10 space-y-8 no-scrollbar scroll-smooth"
+          className="flex-1 mb-20.5 overflow-y-auto py-6 px-2 md:py-10 space-y-8 no-scrollbar scroll-smooth"
         >
           {isSidebarLoading && messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center">
               <Loader2 className="animate-spin text-white/20" size={40} />
               <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/20">
-                Synchronizing...
+                Searching Conversations...
               </p>
             </div>
           ) : (
@@ -294,7 +301,7 @@ export default function Conversation({ user }: { user: UserData }) {
           )}
         </div>
         {sources.length > 0 && (
-          <div className="absolute bottom-5 bg-white/10 backdrop-blur-md border-t border-white/15 w-full pt-1.25 px-2 pb-5 md:pb-10">
+          <div className="absolute z-20 bottom-5 bg-black/30 backdrop-blur-xl border-t border-white/15 w-full pt-1.25 px-2 pb-5 md:pb-10">
             <form
               onSubmit={handleSendMessage}
               className="group relative flex items-center focus-within:border-white/30 pl-6 py-0.5 pr-1.5 transition-all duration-300"
@@ -310,7 +317,7 @@ export default function Conversation({ user }: { user: UserData }) {
                 disabled={!input.trim() || isLoading}
                 onClick={onFlight}
                 className={`p-2.5 cursor-pointer bg-transparent text-white transition-all duration-500 ease-in-out transform disabled:opacity-20
-                ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-rose-700"}
+                ${isFlying ? "-translate-y-16 translate-x-16 opacity-0 scale-150" : "active:scale-95 hover:bg-black"}
               `}
               >
                 <Send size={18} />
@@ -431,9 +438,9 @@ const MessageItem = ({
     <div
       className={`relative group text-sm leading-relaxed transition-all duration-300 overflow-hidden ${
         msg.role === "user"
-          ? "text-white p-2 pl-3 pr-10 bg-rose-600 rounded-4xl rounded-tr-none"
-          : "text-white bg-indigo-700 p-3 pl-5 pr-6.5 pt-4 rounded-4xl rounded-t-none"
-      } ${isCollapsed ? "h-10 opacity-80 rounded-tr-4xl" : "h-auto"}`}
+          ? "text-white p-2 pl-3 pr-10 bg-rose-600"
+          : "text-white bg-indigo-700 p-3 pl-5 pr-6.5 pt-4"
+      } ${isCollapsed ? "h-10 opacity-80" : "h-auto"}`}
     >
       {isShining && (
         <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
@@ -480,7 +487,7 @@ const SourceEmptyState = ({ onIngest }: { onIngest: () => void }) => (
     onClick={onIngest}
     className="w-full cursor-pointer group relative flex items-center justify-center py-5 px-4 border-2 border-dashed border-white/10 hover:border-teal-700/50 hover:bg-teal-700/15 transition-all duration-300 gap-3"
   >
-    <div className="p-2 bg-white/5 rounded-full group-hover:bg-teal-700/60 transition-colors">
+    <div className="p-2 bg-white/5 group-hover:bg-teal-700/60 transition-colors">
       <Plus size={16} className="text-white/40 group-hover:text-white" />
     </div>
     <div className="text-center">

@@ -4,89 +4,86 @@ import {
   UserCog2,
   FilePen,
   User2,
-  NonBinaryIcon,
+  Binary,
   MessageCircle,
   Wrench,
+  FileCheck,
+  Github,
+  Command,
+  Box,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
 
-export default function HeroSection() {
+export default function Main() {
   const router = useRouter();
 
+  // Animation variants for the container
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 10 },
+    show: { opacity: 1, y: 0 },
+  };
+
+  const menuItems = [
+    { label: "Services", path: "/services", icon: Wrench },
+    { label: "Profile", path: "/profile", icon: User2 },
+    { label: "Developers", path: "/developers", icon: UserCog2 },
+    { label: "Feedback", path: "/feedback", icon: FilePen },
+    { label: "Ingest", path: "/ingest", icon: Binary },
+    { label: "Resolve", path: "/feedbacks", icon: FileCheck },
+    { label: "Conversations", path: "/conversations", icon: MessageCircle },
+    { 
+        label: "Contribution", 
+        path: "https://github.com/drjayaswal/basal-docker.git", 
+        icon: Github, 
+        external: true 
+    },
+  ];
+
   return (
-    <div className="relative mb-1 flex flex-col items-center justify-center text-white font-mono">
-      <div
-        className="absolute inset-0 z-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-      <section className="relative z-10 max-w-195 mx-auto border border-white/15 bg-black text-center px-8 py-10.75">
-        <div className="flex flex-wrap items-center justify-center w-fit mx-auto py-[6.9px]">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <AnimatedButton
-              label="Services"
-              onClick={() => router.push("/services")}
-              Icon={Wrench}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <AnimatedButton
-              label="Profile"
-              onClick={() => router.push("/profile")}
-              Icon={User2}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <AnimatedButton
-              label="Developers"
-              onClick={() => router.push("/developers")}
-              Icon={UserCog2}
-            />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <AnimatedButton
-              label="Feedback"
-              onClick={() => router.push("/feedback")}
-              Icon={FilePen}
-            />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}>
-            <AnimatedButton
-              label="Ingest" 
-              onClick={() => router.push("/ingest")} 
-              Icon={NonBinaryIcon} 
-            />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}>
-            <AnimatedButton
-              label="Conversations" 
-              onClick={() => router.push("/conversations")} 
-              Icon={MessageCircle} 
-            />
-          </motion.div>
-          
-        </div>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 font-mono selection:bg-pink-500 selection:text-white">
+      <section className="relative z-10 w-full max-w-4xl">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center text-center"
+        >
+          <div className="flex items-center gap-3">
+            <Box className="text-pink-600" size={32} />
+            <h1 className="text-2xl md:text-4xl font-black uppercase tracking-[0.3em] text-white">
+              Basal™
+            </h1>
+          </div>
+        </motion.div>
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-2 md:grid-cols-4 overflow-hidden border border-white/15 mt-5"
+        >
+          {menuItems.map((menu) => (
+            <motion.div key={menu.label} variants={item} className="bg-black">
+              <AnimatedButton
+                label={menu.label}
+                onClick={() => 
+                  menu.external 
+                    ? window.open(menu.path, "_blank") 
+                    : router.push(menu.path)
+                }
+                Icon={menu.icon}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
     </div>
   );

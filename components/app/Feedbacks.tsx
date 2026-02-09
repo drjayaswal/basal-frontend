@@ -114,9 +114,9 @@ export default function Feedbacks({ user }: { user: UserData }) {
   if (!user || !isAdmin) return null;
 
   return (
-    <div className="bg-black text-white font-mono py-22 px-6 relative">
+    <div className="text-white font-mono relative">
       <div className="max-w-6xl mx-auto">
-        <header className="mb-12 border-l-3 border-pink-700 pl-6">
+        <header className="mb-12">
           <div className="mb-3">
             <h1 className="flex items-center gap-2 mb-2">
               <Image
@@ -129,18 +129,22 @@ export default function Feedbacks({ user }: { user: UserData }) {
               <span className="underline text-3xl font-bold tracking-tighter uppercase underline-offset-4 decoration-pink-600">
                 Feedbacks
               </span>
+              <span className="text-3xl font-bold text-pink-600 -ml-2 mb-1.25 decoration-none decoration-transparent">
+                •
+              </span>
             </h1>
           </div>
           <div className="flex flex-wrap gap-px">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`cursor-pointer px-4 text-[12px] font-bold tracking-widest transition-none uppercase ${activeCategory === cat ? "bg-white text-black py-1" : "hover:bg-white/10 text-white/40 py-1"}`}
-              >
-                {cat}
-              </button>
-            ))}
+            {filteredFeedbacks.length > 0 &&
+              categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`cursor-pointer px-4 text-[12px] font-bold tracking-widest transition-none uppercase ${activeCategory === cat ? "bg-white text-black py-1" : "hover:bg-white/10 text-white/40 py-1"}`}
+                >
+                  {cat}
+                </button>
+              ))}
           </div>
         </header>
         {loading ? (
@@ -166,7 +170,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                     "{fb.content}"
                   </p>
                   <div className="mt-auto flex items-center gap-2 text-[11px] text-gray-500">
-                <User2 size={14} /> {fb.email}
+                    <User2 size={14} /> {fb.email}
                   </div>
                 </div>
               );
@@ -207,7 +211,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 </p>
               </div>
               <p className="flex gap-2 items-center text-[14px] text-white/20 uppercase tracking-tighter">
-              <Clock size={15}/>
+                <Clock size={15} />
                 {new Date(selectedFeedback.created_at).toLocaleString()}
               </p>
             </div>

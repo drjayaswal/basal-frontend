@@ -150,9 +150,6 @@ export default function Ingestion({ user }: AIProps) {
       <div className="w-full max-w-4xl">
         <header className="border-l-4 border-teal-800 pl-3 mb-10 flex items-center justify-between">
           <div>
-            <p className="text-[12px] tracking-widest opacity-50 uppercase text-white">
-              Welcome {user.email.split("@")[0]}
-            </p>
             <h1 className="text-4xl font-black tracking-tighter text-white">
               <span className="uppercase">Ingestion</span> your{" "}
               <span className="underline underline-offset-4 decoration-teal-700">
@@ -192,7 +189,7 @@ export default function Ingestion({ user }: AIProps) {
           </button>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 bg-zinc-950/50 backdrop-blur-sm">
-          <div className="p-8 border-b md:border-b-0 md:border-r border-white space-y-6">
+          <div className="p-8  space-y-6">
             <div className="flex items-center justify-between">
               <Youtube
                 className={`${videoLoading || videoUrl ? " text-teal-700" : "text-white/30"}`}

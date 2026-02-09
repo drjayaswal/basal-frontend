@@ -61,7 +61,7 @@ export default function FeedbackPage() {
   };
   return (
     <div className="min-h-screen text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      <div className="relative bg-black p-6.5 px-10 z-10 w-full max-w-160 border border-white/15 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="relative p-6.5 px-10 z-10 w-full max-w-160 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <button
           onClick={() => router.back()}
           className="cursor-pointer flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-8 group"

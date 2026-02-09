@@ -37,7 +37,7 @@ export function Profile({ user }: ProfileProps) {
   const isLowCredits = user.credits < 10;
 
   return (
-    <div className="w-full text-white bg-black border-y border-white/12 py-14 mt-4.25 flex-col">
+    <div className="w-full text-white flex-col">
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <h1 className="text-3xl sm:text-4xl font-black text-white">
