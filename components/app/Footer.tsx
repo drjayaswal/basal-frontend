@@ -7,26 +7,26 @@ const Footer = () => {
         <div className="flex flex-col gap-y-3 md:flex-row md:justify-between md:items-center">
           <nav className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-1">
             <Link
-              href="https://github.com/drjayaswal/biasbreaker-frontend/blob/main/README.md"
+              href="https://github.com/drjayaswal/basal-frontend/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-500 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-teal-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
             >
               Frontend
             </Link>
             <Link
-              href="https://github.com/drjayaswal/biasbreaker-backend/blob/main/README.md"
+              href="https://github.com/drjayaswal/basal-backend/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-500 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-teal-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
             >
               Backend
             </Link>
             <Link
-              href="https://github.com/drjayaswal/biasbreaker-ml-server/blob/main/README.md"
+              href="https://github.com/drjayaswal/basal-ml-server/blob/main/README.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-500 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-teal-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
             >
               ML Server
             </Link>
@@ -34,15 +34,21 @@ const Footer = () => {
               href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/docs`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-500 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-pink-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
             >
               API Status
             </Link>
             <Link
               href="/developers"
-              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-500 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-indigo-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
             >
               Developers
+            </Link>
+            <Link
+              href="/feedback"
+              className="text-[9px] p-2 md:text-[10px] hover:bg-sky-700 text-white transition-colors uppercase tracking-tighter whitespace-nowrap"
+            >
+              Feedback
             </Link>
           </nav>
         </div>

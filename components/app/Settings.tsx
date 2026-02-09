@@ -2,9 +2,20 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { User, Power, Home, Wrench, Clock } from "lucide-react";
+import {
+  User,
+  Power,
+  Home,
+  Wrench,
+  Clock,
+  BadgeIndianRupee,
+  MessageSquare,
+  IndianRupee,
+  Wallet,
+  ArrowRight,
+  ArrowUpRightFromSquare,
+} from "lucide-react";
 import { SettingsProps } from "@/lib/interface";
-
 
 export function Settings({ user }: SettingsProps) {
   const router = useRouter();
@@ -26,11 +37,14 @@ export function Settings({ user }: SettingsProps) {
 
   if (!user) return null;
 
+  // Logic for low credits styling
+  const isLowCredits = user.credits < 10;
+
   return (
     <div className="w-full text-white bg-black border-y border-white/12 py-14 mt-4.25 flex-col">
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tighter uppercase">
             Settings
           </h1>
 
@@ -57,29 +71,58 @@ export function Settings({ user }: SettingsProps) {
             </button>
           </div>
         </div>
+
         <div className="space-y-6 pt-6">
           <section className="space-y-0.5">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
                 <User size={24} />
               </div>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-4 overflow-hidden">
-                <p className="text-sm sm:text-lg font-medium text-white/30 truncate italic max-w-50 sm:max-w-none">
-                  {user.email}
+              <p className="text-sm sm:text-lg font-medium text-white/30 truncate italic">
+                {user.email}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
+                <Wallet size={24} className="text-white" />
+              </div>
+              <div
+                className={`px-3 py-1 transition-all ${
+                  isLowCredits
+                    ? "bg-rose-600/20 text-rose-700"
+                    : "bg-white/5  text-white"
+                }`}
+              >
+                <span className="text-sm sm:text-lg font-bold">
+                  {user.credits} Credits
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0 relative">
+                <MessageSquare size={24} />
+                {user.total_conversations > 0 && (
+                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-black ring-2 ring-black">
+                    {user.total_conversations}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-sm sm:text-lg flex items-center font-medium gap-2 text-white/30 italic">
+                  conversations <span className="text-white cursor-pointer"><ArrowUpRightFromSquare onClick={()=> router.push("/conversations")}/></span>
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
+              <div className="h-12 w-12 text-white flex items-center justify-center shrink-0">
                 <Clock size={24} />
               </div>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-4 overflow-hidden">
-                <p className="text-sm sm:text-lg font-medium text-white/30 truncate italic max-w-50 sm:max-w-none">
-                  {user.updated_at
-                    ? new Date(user.updated_at).toLocaleString()
-                    : "Never"}
-                </p>
-              </div>
+              <p className="text-sm sm:text-lg font-medium text-white/30 truncate">
+                {user.updated_at
+                  ? new Date(user.updated_at).toLocaleString()
+                  : "Never"}
+              </p>
             </div>
           </section>
         </div>

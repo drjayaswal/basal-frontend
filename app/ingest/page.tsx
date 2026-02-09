@@ -1,14 +1,14 @@
 "use client";
 
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
-import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
-import AI  from "@/components/app/AI";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Loading from "@/components/ui/loading";
+import Ingestion  from "@/components/app/Ingestion";
 
-export default function AIPage() {
+export default function IngestionPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -55,7 +55,7 @@ export default function AIPage() {
 
   return (
     <div>
-      <AI user={user} />
+      <Ingestion user={user} />
     </div>
   );
 }

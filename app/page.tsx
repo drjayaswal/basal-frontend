@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Cog, UserCog2, Binary, Cpu, VectorSquare } from "lucide-react";
+import { ArrowRight, Cog, UserCog2, Binary, Cpu, VectorSquare, FilePen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
@@ -54,6 +54,13 @@ export default function HeroSection() {
               label="Developers" 
               onClick={() => router.push("/developers")} 
               Icon={UserCog2} 
+            />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}>
+            <AnimatedButton 
+              label="Feedback" 
+              onClick={() => router.push("/feedback")} 
+              Icon={FilePen} 
             />
           </motion.div>
         </div>

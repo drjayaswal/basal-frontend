@@ -1,13 +1,13 @@
 services:
   frontend:
-    image: dhruv2k3/biasbreaker-frontend:latest
+    image: dhruv2k3/basal-frontend:latest
     container_name: frontend
     ports:
       - "3000:3000"
     env_file:
       - .env
     networks:
-      - biasbreaker-net
+      - basal-net
 networks:
-  biasbreaker-net:
+  basal-net:
     driver: bridge

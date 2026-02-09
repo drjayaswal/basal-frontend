@@ -18,6 +18,7 @@ export interface UserData {
   email: string;
   id: string;
   updated_at: string;
+  total_conversations: number
   authenticated?: boolean;
   credits: number | 0;
 }

@@ -6,6 +6,7 @@ import { getBaseUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, MoveRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Connect() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function Connect() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -44,11 +45,18 @@ export default function Connect() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center shadow-xl py-10 px-4 rounded-[5rem] relative overflow-hidden">
+    <div className="flex flex-col items-center bg-black border-y border-white/10 justify-center shadow-xl py-24 px-4 relative overflow-hidden">
       <div className="relative z-10 w-full max-w-md mx-auto px-6 ">
         <div className="text-center mb-10">
-          <h1 className="text-5xl font-bold text-white">
-            Bias<span className="text-indigo-600">~</span>Breaker
+          <h1 className="flex justify-center items-center text-5xl font-bold text-white">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={60}
+              height={60}
+              quality={75}
+            />
+            Basal™
           </h1>
           <p className="text-white/70 text-sm mt-2">connect to your account</p>
         </div>

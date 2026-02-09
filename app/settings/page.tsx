@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Settings } from "@/components/app/Settings";
 import { getBaseUrl } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
 

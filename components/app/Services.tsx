@@ -22,6 +22,9 @@ import {
   Cloud,
   BadgeIndianRupee,
   ApertureIcon,
+  InboxIcon,
+  Binary,
+  NonBinary,
 } from "lucide-react";
 import Script from "next/script";
 import { FileData, UserData } from "@/lib/interface";
@@ -669,10 +672,19 @@ export function Services({ user }: { user: UserData }) {
                 </span>
               </div>
             </div>
-            <div className="flex items-center border border-white/13 divide-x divide-white/15 p-0.5">
-              <div className="flex items-center gap-2 px-3 py-1.5">
-                <BadgeIndianRupee className="w-4 h-4 text-white" />
-                <span className="text-[11px] font-medium text-white">
+            <div className="flex items-center border border-white/13 p-0.5">
+              <div
+                className={`flex items-center gap-2 px-3 py-1.5 transition-colors duration-300 ${
+                  user.credits < 10
+                    && "bg-red-500/20"
+                }`}
+              >
+                <BadgeIndianRupee
+                  className={`w-4 h-4 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
+                />
+                <span
+                  className={`text-[11px] font-medium ${user.credits < 10 ? "text-red-400" : "text-white"}`}
+                >
                   {user.credits}
                 </span>
               </div>
@@ -691,46 +703,31 @@ export function Services({ user }: { user: UserData }) {
                     },
                   });
                 }}
-                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-pink-500"
+                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-pink-600"
               >
                 <span className="text-[12px]">Upgrade</span>
               </button>
               <div className="flex gap-2 items-center">
                 <button
                   onClick={() => {
-                    if (user.credits == 0) {
-                      toast.info("Credits Exausted", {
-                        action: {
-                          label: "Upgrade",
-                          onClick: () => {
-                            const toastId = toast.loading("Redirecting...");
-                            setTimeout(() => {
-                              toast.dismiss(toastId);
-                              router.push("/upgrade");
-                            }, 1500);
-                          },
-                        },
-                      });
-                    } else {
-                      const toastId = toast.loading("Redirecting...");
-                      setTimeout(() => {
-                        toast.dismiss(toastId);
-                        router.push("/biasbreakerai");
-                      }, 1500);
-                    }
+                    const toastId = toast.loading("Redirecting...");
+                    setTimeout(() => {
+                      toast.dismiss(toastId);
+                      router.push("/ingest");
+                    }, 1500);
                   }}
-                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-indigo-600"
+                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-teal-700"
                 >
-                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-900 via-rose-400 to-rose-900" />
+                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-teal-700 via-teal-500 to-teal-700" />
                   <span className="text-[12px] relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-2">
-                    AI
+                    Ingest
                   </span>
                   <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
-                    <div className="absolute group-hover/btn:rotate-180 transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
-                      <ApertureIcon />
+                    <div className="absolute transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
+                      <NonBinary />
                     </div>
-                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:rotate-180 group-hover/btn:opacity-0 flex items-center justify-center">
-                      <ApertureIcon />
+                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
+                      <Binary />
                     </div>
                   </div>
                 </button>
@@ -741,7 +738,7 @@ export function Services({ user }: { user: UserData }) {
               <button
                 onClick={fetchHistory}
                 title="Sync History"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-indigo-500"
+                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-indigo-600"
               >
                 <RefreshCcw
                   className={cn(
@@ -754,7 +751,7 @@ export function Services({ user }: { user: UserData }) {
               <button
                 onClick={exportToCSV}
                 title="Export CSV"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-emerald-600"
+                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-600"
               >
                 <Download className="w-3.5 h-3.5 text-white transition-all" />
               </button>
@@ -762,7 +759,7 @@ export function Services({ user }: { user: UserData }) {
               <button
                 onClick={resetHistory}
                 title="Clear All"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-500"
+                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-600"
               >
                 <Trash2 className="w-3.5 h-3.5 text-white transition-all" />
               </button>

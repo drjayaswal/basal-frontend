@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
 import Loading from "@/components/ui/loading";
 import { UserData } from "@/lib/interface";
-import Chat from "@/components/app/Chat";
+import Conversation from "@/components/app/Conversation";
 
 export default function ChatPage() {
   const [user, setUser] = useState<UserData | null>(null);
@@ -55,7 +55,7 @@ export default function ChatPage() {
 
   return (
     <div>
-      <Chat user={user} />
+      <Conversation user={user} />
     </div>
   );
 }

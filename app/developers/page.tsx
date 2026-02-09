@@ -71,7 +71,7 @@ const Developers = () => {
             label="CONTRIBUTION"
             onClick={() =>
               window.open(
-                "https://github.com/drjayaswal/biasbreaker-docker.git",
+                "https://github.com/drjayaswal/basal-docker.git",
                 "_blank",
               )
             }

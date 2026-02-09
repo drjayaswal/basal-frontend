@@ -2,16 +2,7 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
-import {
-  Loader2,
-  Upload,
-  Youtube,
-  ArrowRight,
-  File,
-  ApertureIcon,
-  MessageCircle,
-  Send,
-} from "lucide-react";
+import { Loader2, Upload, Youtube, ArrowRight, File, Send } from "lucide-react";
 import { getBaseUrl } from "@/lib/utils";
 import { UserData } from "@/lib/interface";
 import { useRouter } from "next/navigation";
@@ -20,7 +11,7 @@ interface AIProps {
   user: UserData;
 }
 
-export default function AI({ user }: AIProps) {
+export default function Ingestion({ user }: AIProps) {
   const router = useRouter();
   const [videoUrl, setVideoUrl] = useState("");
   const [videoLoading, setVideoLoading] = useState(false);
@@ -58,7 +49,7 @@ export default function AI({ user }: AIProps) {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/biasbreakerai/chat");
+                  router.push("/ingestion/chat");
                 }, 1500);
               },
             },
@@ -72,7 +63,7 @@ export default function AI({ user }: AIProps) {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/biasbreakerai/chat");
+                  router.push("/ingestion/chat");
                 }, 1500);
               },
             },
@@ -124,7 +115,7 @@ export default function AI({ user }: AIProps) {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/biasbreakerai/chat");
+                  router.push("/ingestion/chat");
                 }, 1500);
               },
             },
@@ -138,7 +129,7 @@ export default function AI({ user }: AIProps) {
                 const toastId = toast.loading("Redirecting...");
                 setTimeout(() => {
                   toast.dismiss(toastId);
-                  router.push("/biasbreakerai/chat");
+                  router.push("/ingestion/chat");
                 }, 1500);
               },
             },
@@ -157,43 +148,31 @@ export default function AI({ user }: AIProps) {
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        <header className="border-l-2 border-rose-700 pl-4 mb-10 flex items-center justify-between">
+        <header className="border-l-4 border-teal-800 pl-3 mb-10 flex items-center justify-between">
           <div>
-            <p className="text-[10px] tracking-widest opacity-50 uppercase text-white">
+            <p className="text-[12px] tracking-widest opacity-50 uppercase text-white">
               Welcome {user.email.split("@")[0]}
             </p>
-            <h1 className="text-4xl font-black uppercase tracking-tighter text-white">
-              BiasBreaker <span className="text-rose-700">AI</span>
+            <h1 className="text-4xl font-black tracking-tighter text-white">
+              <span className="uppercase">Ingestion</span> your{" "}
+              <span className="underline underline-offset-4 decoration-teal-700">
+                Data
+              </span>
             </h1>
           </div>
           <button
             onClick={() => {
-              if (user.credits == 0) {
-                toast.info("Credits Exhausted", {
-                  action: {
-                    label: "Upgrade",
-                    onClick: () => {
-                      const toastId = toast.loading("Redirecting...");
-                      setTimeout(() => {
-                        toast.dismiss(toastId);
-                        router.push("/upgrade");
-                      }, 1500);
-                    },
-                  },
-                });
-              } else {
-                const toastId = toast.loading("Redirecting to Chat...");
-                setTimeout(() => {
-                  toast.dismiss(toastId);
-                  router.push("/biasbreakerai/chat");
-                }, 1500);
-              }
+              const toastId = toast.loading("Redirecting...");
+              setTimeout(() => {
+                toast.dismiss(toastId);
+                router.push("/conversations");
+              }, 1500);
             }}
-            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-4 py-2 font-bold text-white transition-all duration-500 bg-indigo-600"
+            className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-4 py-2 font-bold text-white transition-all duration-500 bg-teal-700"
           >
-            <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-600 via-rose-800 to-rose-600" />
+            <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-800 via-rose-600 to-rose-800" />
             <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
-              Chat
+              Conversations
             </span>
             <div className="relative z-10 flex items-center justify-center h-6 w-6">
               <div
@@ -213,12 +192,12 @@ export default function AI({ user }: AIProps) {
           </button>
         </header>
         <div className="grid grid-cols-1 md:grid-cols-2 border border-white/10 bg-zinc-950/50 backdrop-blur-sm">
-          <div className="p-8 border-b md:border-b-0 md:border-r border-white/10 space-y-6">
+          <div className="p-8 border-b md:border-b-0 md:border-r border-white space-y-6">
             <div className="flex items-center justify-between">
               <Youtube
-                className={`${videoLoading || videoUrl ? "fill-rose-700 stroke-1" : "text-white/50"}`}
+                className={`${videoLoading || videoUrl ? " text-teal-700" : "text-white/30"}`}
               />
-              <span className="text-[10px] text-white/30 font-bold uppercase">
+              <span className="text-[14px] text-white/30 font-bold uppercase">
                 Video
               </span>
             </div>
@@ -226,14 +205,14 @@ export default function AI({ user }: AIProps) {
             <form onSubmit={handleVideoIngest} className="space-y-4">
               <input
                 disabled={videoLoading}
-                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-rose-700 transition-colors placeholder:text-zinc-700"
+                className="w-full bg-transparent border-b border-white/20 py-2 text-white outline-none focus:border-teal-700 transition-colors placeholder:text-zinc-700"
                 placeholder="https://www.youtube.com/watch?v=AKDBhBALKBAKljHBKAb"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
               <button
                 disabled={videoLoading || !videoUrl}
-                className={`cursor-pointer group w-full bg-white text-black py-3 text-xs font-bold uppercase ${videoUrl && "hover:bg-rose-700 hover:text-white"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
+                className={`cursor-pointer group w-full bg-white text-black py-3 text-xs font-bold uppercase ${videoUrl && "hover:bg-teal-700 hover:text-white"} transition-all flex items-center justify-center gap-2 disabled:opacity-30`}
               >
                 {videoLoading ? (
                   <>
@@ -255,9 +234,9 @@ export default function AI({ user }: AIProps) {
           <div className="p-8 space-y-6">
             <div className="flex items-center justify-between">
               <File
-                className={`${fileLoading ? "text-rose-700" : "text-white/50"}`}
+                className={`${fileLoading ? "text-teal-700" : "text-white/50"}`}
               />
-              <span className="text-[10px] text-white/30 font-bold uppercase">
+              <span className="text-[14px] text-white/30 font-bold uppercase">
                 Document
               </span>
             </div>
@@ -265,13 +244,13 @@ export default function AI({ user }: AIProps) {
             <label
               className={`
               border border-dashed p-10 flex flex-col items-center justify-center cursor-pointer transition-all
-              ${fileLoading ? "border-rose-700 bg-rose-700/5" : "border-white/20 hover:border-white/40 hover:bg-white/5"}
+              ${fileLoading ? "border-teal-700 bg-teal-700/5" : "border-white/20 hover:border-white/40 hover:bg-white/5"}
             `}
             >
               {fileLoading ? (
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <Loader2 className="animate-spin text-rose-700" size={24} />
-                  <span className="text-[12px] uppercase text-rose-700 font-bold">
+                  <Loader2 className="animate-spin text-teal-700" size={24} />
+                  <span className="text-[12px] uppercase text-teal-700 font-bold">
                     Uploading...
                   </span>
                   <span className="text-[10px] text-white/50 truncate max-w-37.5">
