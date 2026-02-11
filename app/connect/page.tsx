@@ -5,8 +5,8 @@ import { useState } from "react";
 import { getBaseUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, MoveRight } from "lucide-react";
 import Image from "next/image";
+import { ArrowRightIcon, EyeClosedIcon, EyeIcon} from "@phosphor-icons/react";
 
 export default function Connect() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function Connect() {
   };
 
   return (
-    <div className="flex flex-col items-center bg-black border-y border-white/10 justify-center shadow-xl py-24 px-4 relative overflow-hidden">
+    <div className="flex selection:bg-indigo-600 selection:text-white flex-col items-center justify-center shadow-xl py-24 px-4 relative overflow-hidden">
       <div className="relative z-10 w-full max-w-md mx-auto px-6 ">
         <div className="text-center mb-10">
           <h1 className="flex justify-center items-center text-5xl font-bold text-white">
@@ -89,26 +89,26 @@ export default function Connect() {
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
-                <Eye className="w-5 h-5" strokeWidth={2.5} />
+                <EyeIcon className="scale-130" strokeWidth={2.5} />
               ) : (
-                <EyeOff className="w-5 h-5" strokeWidth={2.5} />
+                <EyeClosedIcon className="fill-white scale-130" strokeWidth={2.5} />
               )}
             </button>
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="group/btn cursor-pointer relative flex w-full items-center justify-between overflow-hidden bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-600 disabled:opacity-50"
+            className="group/btn cursor-pointer relative flex w-full items-center justify-between overflow-hidden bg-black px-8 py-4 font-bold text-white transition-all duration-500 hover:bg-indigo-700 disabled:opacity-50"
           >
             <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest">
               {loading ? "Connecting..." : "Continue"}
             </span>
             <div className="relative flex items-center overflow-hidden">
-              <MoveRight
+              <ArrowRightIcon
                 className="transform transition-all duration-500 -translate-x-full opacity-0 
                  group-hover/btn:translate-x-0 group-hover/btn:opacity-100"
               />
-              <MoveRight
+              <ArrowRightIcon
                 className="absolute transition-all duration-500 opacity-100 
                  group-hover/btn:translate-x-full group-hover/btn:opacity-0"
               />

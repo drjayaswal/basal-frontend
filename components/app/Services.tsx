@@ -12,26 +12,22 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  File,
-  Trash2,
-  Download,
-  Paperclip,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-  Loader2,
-  RefreshCcw,
-  Delete,
-  Folder,
-  Lock,
-  DownloadCloud,
-  Cloud,
-  BadgeIndianRupee,
-  Binary,
-  NonBinary,
-  MessageCircle,
-} from "lucide-react";
-
+  ArrowsCounterClockwiseIcon,
+  BackspaceIcon,
+  CheckCircleIcon,
+  CircleNotchIcon,
+  CloudArrowDownIcon,
+  CloudIcon,
+  CurrencyCircleDollarIcon,
+  DownloadIcon,
+  ExclamationMarkIcon,
+  FilePdfIcon,
+  FolderOpenIcon,
+  LockSimpleIcon,
+  PaperclipIcon,
+  TrashIcon,
+  WarningOctagonIcon,
+} from "@phosphor-icons/react";
 export function Services({ user }: { user: UserData }) {
   const id = user;
   const router = useRouter();
@@ -342,22 +338,22 @@ export function Services({ user }: { user: UserData }) {
     switch (status) {
       case "completed":
         return {
-          icon: <CheckCircle2 className="w-4 h-4" />,
+          icon: <CheckCircleIcon className="w-4 h-4" />,
           bg: "text-emerald-500",
         };
       case "processing":
         return {
-          icon: <Loader2 className="w-4 h-4 animate-spin" />,
+          icon: <CircleNotchIcon className="w-4 h-4 animate-spin" />,
           bg: "text-indigo-500",
         };
       case "failed":
         return {
-          icon: <AlertCircle className="w-4 h-4" />,
+          icon: <ExclamationMarkIcon className="w-4 h-4" />,
           bg: "text-rose-500",
         };
       default:
         return {
-          icon: <Clock className="w-4 h-4" />,
+          icon: <WarningOctagonIcon className="w-4 h-4" />,
           bg: "text-slate-500",
         };
     }
@@ -446,7 +442,7 @@ export function Services({ user }: { user: UserData }) {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="bg-transparent text-white font-mono pt-15.5">
+    <div className="bg-transparent selection:bg-indigo-600 selection:text-white text-white font-mono pt-15.5">
       <Script
         src="https://apis.google.com/js/api.js"
         onLoad={() =>
@@ -480,11 +476,11 @@ export function Services({ user }: { user: UserData }) {
                     onClick={() => setDescription("")}
                     className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-red-500 transition-all"
                   >
-                    <Delete className="w-5 h-5" />
+                    <BackspaceIcon className="w-5 h-5" />
                   </button>
                 )}
                 <label className="p-2 bg-black cursor-pointer hover:text-white text-white/30 hover:bg-indigo-500 transition-all">
-                  <Paperclip className="w-5 h-5" />
+                  <PaperclipIcon className="w-5 h-5" />
                   <input
                     type="file"
                     className="hidden"
@@ -501,18 +497,18 @@ export function Services({ user }: { user: UserData }) {
                 Source Selection
               </h3>
               <div className="flex items-center gap-2 px-3">
-                <BadgeIndianRupee className="w-4 h-4 text-white" />
+                <CurrencyCircleDollarIcon className="w-4 h-4 text-white" />
                 <span className="text-[11px] font-medium text-white tracking-widest">
                   1/file
                 </span>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 bg-black border-dashed border p-3.5 border-white/20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 bg-black border border-white/15">
               {[
                 {
                   title: "Google Drive",
                   icon: (
-                    <Cloud className="w-5 h-5 text-white group-hover:text-white" />
+                    <CloudIcon className="w-5 h-5 text-white group-hover:text-white" />
                   ),
                   handler: () => {
                     toast.info("Upgrade to use Google Drive", {
@@ -537,30 +533,30 @@ export function Services({ user }: { user: UserData }) {
                 {
                   title: "Upload Folder",
                   icon: (
-                    <Folder className="w-5 h-5 text-white group-hover:text-white" />
+                    <FolderOpenIcon className="w-5 h-5 text-white group-hover:text-white" />
                   ),
                   handler: () =>
                     description.trim()
                       ? folderInputRef.current?.click()
                       : toast.error("Description Required"),
-                  color: "hover:bg-lime-700",
+                  color: "hover:bg-indigo-700",
                 },
                 {
                   title: "Quick File",
                   icon: (
-                    <File className="w-5 h-5 text-white group-hover:text-white" />
+                    <FilePdfIcon className="w-5 h-5 text-white group-hover:text-white" />
                   ),
                   handler: () =>
                     description.trim()
                       ? fileInputRef.current?.click()
                       : toast.error("Description Required"),
-                  color: "hover:bg-fuchsia-700",
+                  color: "hover:bg-indigo-700",
                 },
                 {
                   title: "Watch Folder",
                   icon: (
                     <span className="text-[9px] border border-white/20 px-1">
-                      <Lock />
+                      <LockSimpleIcon />
                     </span>
                   ),
                   handler: () =>
@@ -598,7 +594,7 @@ export function Services({ user }: { user: UserData }) {
                     "group/btn relative flex items-center justify-between overflow-hidden px-8 py-4 font-bold text-white transition-all duration-500",
                     btn.disabled
                       ? "opacity-30 cursor-not-allowed"
-                      : cn("cursor-pointer hover:bg-indigo-600", btn.color),
+                      : cn("cursor-pointer hover:bg-indigo-700", btn.color),
                   )}
                 >
                   <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
@@ -638,7 +634,7 @@ export function Services({ user }: { user: UserData }) {
                   user.credits < 10 && "bg-red-500/20"
                 }`}
               >
-                <BadgeIndianRupee
+                <CurrencyCircleDollarIcon
                   className={`w-4 h-5 ${user.credits < 10 ? "text-red-400" : "text-white"}`}
                 />
                 <span
@@ -662,65 +658,22 @@ export function Services({ user }: { user: UserData }) {
                     },
                   });
                 }}
-                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-pink-800"
+                className="group px-10 ml-0.5 cursor-pointer flex items-center justify-center h-8 w-9 transition-colors duration-300 hover:bg-cyan-700"
               >
                 <span className="text-[12px]">Upgrade</span>
               </button>
-              <div className="flex gap-2 items-center">
-                <button
-                  onClick={() => {
-                    const toastId = toast.loading("Redirecting...");
-                    setTimeout(() => {
-                      toast.dismiss(toastId);
-                      router.push("/ingest");
-                    }, 1500);
-                  }}
-                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-teal-700"
-                >
-                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-teal-700 via-teal-500 to-teal-700" />
-                  <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
-                    <div className="absolute transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
-                      <NonBinary />
-                    </div>
-                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
-                      <Binary />
-                    </div>
-                  </div>
-                </button>
-              </div>
-              <div className="flex gap-2 items-center">
-                <button
-                  onClick={() => {
-                    const toastId = toast.loading("Redirecting...");
-                    setTimeout(() => {
-                      toast.dismiss(toastId);
-                      router.push("/conversations");
-                    }, 1500);
-                  }}
-                  className="group/btn cursor-pointer relative flex items-center justify-between overflow-hidden px-3 ml-0.5 py-1 font-bold text-white transition-all duration-500 bg-rose-800"
-                >
-                  <div className="absolute inset-0 z-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-linear-to-r from-rose-900 via-rose-500 to-rose-900" />
-                  <div className="relative flex items-center justify-center h-6 w-6 scale-75 overflow-hidden">
-                    <div className="absolute transform transition-all duration-800 -translate-x-full opacity-0 group-hover/btn:translate-x-0 group-hover/btn:opacity-100 flex items-center justify-center">
-                      <MessageCircle />
-                    </div>
-                    <div className="transition-all duration-800 opacity-100 group-hover/btn:translate-x-full group-hover/btn:opacity-0 flex items-center justify-center">
-                      <MessageCircle />
-                    </div>
-                  </div>
-                </button>
-              </div>
+
             </div>
 
             <div className="flex items-center border border-white/13 p-0.5">
               <button
                 onClick={fetchHistory}
                 title="Sync History"
-                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-indigo-600"
+                className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-indigo-700"
               >
-                <RefreshCcw
+                <ArrowsCounterClockwiseIcon
                   className={cn(
-                    "w-3.5 h-3.5 text-white transition-all",
+                    "text-white transition-all",
                     isProcessing && "animate-spin",
                   )}
                 />
@@ -731,7 +684,7 @@ export function Services({ user }: { user: UserData }) {
                 title="Export CSV"
                 className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-green-600"
               >
-                <Download className="w-3.5 h-3.5 text-white transition-all" />
+                <CloudArrowDownIcon className="text-white transition-all" />
               </button>
               <div className="w-px h-8 bg-white/20 mx-0.5" />
               <button
@@ -739,14 +692,14 @@ export function Services({ user }: { user: UserData }) {
                 title="Clear All"
                 className="group cursor-pointer flex items-center justify-center h-8 w-9 transition-all hover:bg-red-600"
               >
-                <Trash2 className="w-3.5 h-3.5 text-white transition-all" />
+                <TrashIcon className="text-white transition-all" />
               </button>
             </div>
           </div>
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             {extractedData.length === 0 ? (
               <div className="h-full flex flex-col items-center bg-black/10 justify-center space-y-4 opacity-50">
-                <File className="w-8 h-8" />
+                <FilePdfIcon className="w-8 h-8" />
                 <p className="text-[10px] uppercase tracking-widest">
                   Awaiting Uploads
                 </p>
@@ -769,13 +722,13 @@ export function Services({ user }: { user: UserData }) {
                       className={cn(
                         "p-[10.7px] py-[14.80px] group relative overflow-hidden transition-all border-b border-white/10",
                         isInteractive
-                          ? "cursor-pointer hover:bg-indigo-600/50"
+                          ? "cursor-pointer hover:bg-indigo-700/50"
                           : "opacity-60",
                       )}
                     >
                       <div className="flex px-2 items-center justify-between relative z-10">
                         <div className="flex items-center gap-4 min-w-0">
-                          <File className="w-8 h-6 text-white/50 group-hover:text-white transition-colors duration-500" />
+                          <FilePdfIcon className="w-8 h-6 text-white/50 group-hover:text-white transition-colors duration-500" />
                           <div className="min-w-0 flex items-center">
                             <h4 className="text-sm text-white/50 group-hover:text-white font-bold transition-colors duration-500 truncate pr-4">
                               {file.filename.split("/").pop()}
@@ -919,17 +872,15 @@ export function Services({ user }: { user: UserData }) {
                         <span className="relative z-10 transition-all duration-500 group-hover/btn:tracking-widest mr-4">
                           Download Chart
                         </span>
-                        <div className="relative flex items-center overflow-hidden h-6 w-6">
-                          <Download
+                        <div className="relative flex items-center overflow-hidden h-6 w-10 px-2">
+                          <DownloadIcon
                             className={cn(
-                              "transform transition-all duration-500 -translate-y-full opacity-0 absolute",
-                              "group-hover/btn:translate-y-0 group-hover/btn:opacity-100",
+                              "transform transition-all duration-500 -translate-y-full opacity-0 scale-150 absolute group-hover/btn:translate-y-0 group-hover/btn:opacity-100",
                             )}
                           />
-                          <DownloadCloud
+                          <CloudArrowDownIcon
                             className={cn(
-                              "transition-all duration-500 opacity-100",
-                              "group-hover/btn:translate-y-full group-hover/btn:opacity-0",
+                              "transition-all duration-500 opacity-100 scale-150 group-hover/btn:translate-y-full group-hover/btn:opacity-0",
                             )}
                           />
                         </div>

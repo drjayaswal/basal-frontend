@@ -2,17 +2,10 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
-import {
-  Send,
-  MessageSquare,
-  Mail,
-  Tag,
-  Loader2,
-  ArrowLeft,
-} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
+import { ArrowLeftIcon, ChatDotsIcon, CircleNotchIcon, EnvelopeSimpleIcon, PaperPlaneTiltIcon, Tag, TagIcon } from "@phosphor-icons/react";
 
 export default function FeedbackPage() {
   const router = useRouter();
@@ -60,13 +53,13 @@ export default function FeedbackPage() {
     }
   };
   return (
-    <div className="min-h-screen text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen selection:bg-sky-600 selection:text-white text-white font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
       <div className="relative p-6.5 px-10 z-10 w-full max-w-160 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <button
           onClick={() => router.back()}
           className="cursor-pointer flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-8 group"
         >
-          <ArrowLeft
+          <ArrowLeftIcon
             size={16}
             className="group-hover:-translate-x-1 transition-transform"
           />
@@ -96,7 +89,7 @@ export default function FeedbackPage() {
         >
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <Mail size={12} /> Email Address
+              <EnvelopeSimpleIcon size={12} /> Email Address
             </label>
             <input
               autoComplete="off"
@@ -115,7 +108,7 @@ export default function FeedbackPage() {
           </div>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <Tag size={12} /> Category
+              <TagIcon size={12} /> Category
             </label>
             <div className="relative">
               <select
@@ -138,7 +131,7 @@ export default function FeedbackPage() {
           </div>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-[10px] font-bold uppercase text-white/30 tracking-widest">
-              <MessageSquare size={12} /> Your Thoughts
+              <ChatDotsIcon size={12} /> Your Thoughts
             </label>
             <textarea
               required
@@ -163,11 +156,11 @@ export default function FeedbackPage() {
             <span className="relative text-sm flex items-center justify-center gap-2 z-10 transition-all duration-500">
               {isLoading ? (
                 <>
-                  Submiting... <Loader2 className="animate-spin" size={16} />
+                  Submiting... <CircleNotchIcon className="animate-spin" size={16} />
                 </>
               ) : (
                 <>
-                  Submit <Send size={14} />
+                  Submit <PaperPlaneTiltIcon size={14} />
                 </>
               )}
             </span>

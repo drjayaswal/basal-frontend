@@ -1,7 +1,7 @@
 "use client"
 
-import { Check, Bitcoin } from 'lucide-react';
 import { AnimatedButton } from '@/components/ui/animated-button';
+import { CheckIcon, CurrencyCircleDollarIcon } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 
 const UpgradePage = () => {
@@ -51,7 +51,7 @@ const UpgradePage = () => {
               {plan.features.map((feature) => (
                 <div key={feature} className="flex items-center gap-3">
                   <div className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.featured ? 'bg-indigo-500/20' : 'bg-white/5'}`}>
-                    <Check className={`w-3 h-3 ${plan.featured ? 'text-indigo-400' : 'text-white/40'}`} />
+                    <CheckIcon className={`w-3 h-3 ${plan.featured ? 'text-indigo-400' : 'text-white/40'}`} />
                   </div>
                   <span className="text-sm text-white/70">{feature}</span>
                 </div>
@@ -61,7 +61,7 @@ const UpgradePage = () => {
             <AnimatedButton
               label={plan.buttonText}
               onClick={() => toast.loading("Redirecting to Payment")} 
-              Icon={Bitcoin}
+              Icon={CurrencyCircleDollarIcon}
             />
           </div>
         ))}

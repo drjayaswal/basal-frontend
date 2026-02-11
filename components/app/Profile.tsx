@@ -3,15 +3,16 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
-  User,
-  Power,
-  Home,
-  Wrench,
-  Clock,
-  MessageSquare,
-  Wallet,
-  ArrowUpRightFromSquare,
-} from "lucide-react";
+  ArrowBendRightUpIcon,
+  BellIcon,
+  ClockCounterClockwiseIcon,
+  HouseLineIcon,
+  PackageIcon,
+  PiggyBankIcon,
+  SignOutIcon,
+  UserIcon
+} from "@phosphor-icons/react";
+
 import { ProfileProps } from "@/lib/interface";
 
 export function Profile({ user }: ProfileProps) {
@@ -34,10 +35,31 @@ export function Profile({ user }: ProfileProps) {
 
   if (!user) return null;
 
+  const navItems = [
+    {
+      label: "Home",
+      icon: <HouseLineIcon size={20} />,
+      onClick: () => router.push("/"),
+      hoverClass: "hover:bg-lime-700",
+    },
+    {
+      label: "Services",
+      icon: <PackageIcon size={20} />,
+      onClick: () => router.push("/services"),
+      hoverClass: "hover:bg-lime-700",
+    },
+    {
+      label: "Logout",
+      icon: <SignOutIcon size={20} />,
+      onClick: handleLogout,
+      hoverClass: "hover:bg-rose-700",
+    },
+  ];
+
   const isLowCredits = user.credits < 10;
 
   return (
-    <div className="w-full text-white flex-col">
+    <div className="w-full selection:bg-lime-600 selection:text-white text-white flex-col">
       <div className="max-w-2xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <h1 className="text-3xl sm:text-4xl font-black text-white">
@@ -45,26 +67,29 @@ export function Profile({ user }: ProfileProps) {
           </h1>
 
           <div className="flex items-center w-full sm:w-auto border border-white/12 px-1 py-0.5">
-            <button
-              onClick={() => router.push("/")}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-teal-700"
-            >
-              <Home className="w-5 h-5" />
-            </button>
-            <div className="h-12 bg-white/12 w-px mx-1" />
-            <button
-              onClick={() => router.push("/services")}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-indigo-700"
-            >
-              <Wrench className="w-5 h-5" />
-            </button>
-            <div className="h-12 bg-white/12 w-px mx-1" />
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all hover:bg-rose-700"
-            >
-              <Power className="w-5 h-5" />
-            </button>
+            {navItems.map((item, index) => (
+              <div key={item.label} className="flex items-center">
+                <div className="relative group/tooltip">
+                  <button
+                    onClick={item.onClick}
+                    className={`flex items-center gap-3 text-white p-3 cursor-pointer duration-200 font-bold transition-all ${item.hoverClass}`}
+                  >
+                    {item.icon}
+                  </button>
+
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 z-50 pointer-events-none opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 hidden md:block">
+                    <div className="bg-white text-black text-[10px] font-bold uppercase tracking-wider py-1 px-3 whitespace-nowrap shadow-xl border border-white/20 relative">
+                      {item.label}
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-white" />
+                    </div>
+                  </div>
+                </div>
+                
+                {index < navItems.length - 1 && (
+                  <div className="h-12 bg-white/12 w-px mx-1" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -72,7 +97,7 @@ export function Profile({ user }: ProfileProps) {
           <section className="space-y-0.5">
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
-                <User size={24} />
+                <UserIcon size={24} />
               </div>
               <p className="text-sm sm:text-lg font-medium text-white/30 truncate italic">
                 {user.email}
@@ -81,13 +106,13 @@ export function Profile({ user }: ProfileProps) {
 
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
-                <Wallet size={24} />
+                <PiggyBankIcon size={24} />
               </div>
               <div
                 className={`px-3 py-1 transition-all ${
                   isLowCredits
                     ? "bg-rose-700/20 text-rose-700"
-                    : "bg-white/5  text-white"
+                    : "text-white bg-lime-700"
                 }`}
               >
                 <span className="text-sm sm:text-lg font-bold">
@@ -95,24 +120,31 @@ export function Profile({ user }: ProfileProps) {
                 </span>
               </div>
             </div>
+
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0 relative">
-                <MessageSquare size={24} />
+                <BellIcon size={24} />
                 {user.total_conversations > 0 && (
-                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-black ring-2 ring-black">
+                  <span className="absolute top-2 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-lime-700 text-[10px] font-black text-white ring-2 ring-black">
                     {user.total_conversations}
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-sm sm:text-lg flex items-center font-medium gap-2 text-white/30 italic">
-                  conversations <span className="text-white cursor-pointer"><ArrowUpRightFromSquare onClick={()=> router.push("/conversations")}/></span>
+                  conversations{" "}
+                  <span className="text-white cursor-pointer">
+                    <ArrowBendRightUpIcon
+                      onClick={() => router.push("/conversations")}
+                    />
+                  </span>
                 </p>
               </div>
             </div>
+
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 text-white/30 flex items-center justify-center shrink-0">
-                <Clock size={24} />
+                <ClockCounterClockwiseIcon size={24} />
               </div>
               <p className="text-sm sm:text-lg font-medium text-white/30 truncate">
                 {user.updated_at

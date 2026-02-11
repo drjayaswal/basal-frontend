@@ -1,19 +1,15 @@
 "use client";
 
-import {
-  ArrowRight,
-  Cog,
-  Wrench,
-} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { motion } from "framer-motion";
+import { ArrowRightIcon, PackageIcon } from "@phosphor-icons/react";
 
 export default function HeroSection() {
   const router = useRouter();
 
   return (
-    <div className="relative min-h-[59vh] flex flex-col items-center justify-center text-white font-sans bg-black mb-13">
+    <div className="relative min-h-[59vh] flex flex-col items-center justify-center selection:bg-indigo-600 selection:text-white text-white font-sans bg-black mb-13">
       <div
         className="absolute inset-0 z-0 opacity-10 pointer-events-none"
         style={{
@@ -40,7 +36,7 @@ export default function HeroSection() {
             <AnimatedButton
               label="Home"
               onClick={() => router.push("/")}
-              Icon={ArrowRight}
+              Icon={ArrowRightIcon}
             />
           </motion.div>
           <motion.div
@@ -51,8 +47,7 @@ export default function HeroSection() {
             <AnimatedButton
               label="Services"
               onClick={() => router.push("/services")}
-              Icon={Wrench}
-              rotateIcon 
+              Icon={PackageIcon}
             />
           </motion.div>
         </div>

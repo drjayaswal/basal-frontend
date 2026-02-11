@@ -1,12 +1,10 @@
 import "./globals.css";
-import Navbar from "../components/app/Navbar";
 import Footer from "../components/app/Footer";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "sonner";
 import AuthGuard from "@/components/app/AuthGurad";
-import { cn } from "@/lib/utils";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -28,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased select-none bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
       >
         <Toaster
           position="bottom-right"
@@ -40,14 +38,13 @@ export default function RootLayout({
               backgroundColor: '#000000',
               color: '#ffffff'
             },
-            className: "bg-white text-black font-bold shadow-2xl broder border-white",
+            className: "bg-white text-black font-bold broder border-white",
           }}
         />
         <GoogleOAuthProvider
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
         >
           <AuthGuard>
-            <Navbar />
             <main className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-x-hidden font-mono bg-black">
               <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center" />
               <div className="relative z-10 w-full items-center">

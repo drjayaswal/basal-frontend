@@ -3,10 +3,10 @@
 import { UserData } from "@/lib/interface";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
-import { Loader2, Inbox, X, User2, Clock } from "lucide-react";
 import { getBaseUrl } from "@/lib/utils";
 import Image from "next/image";
 import { toast } from "sonner";
+import { CircleNotchIcon, ClockAfternoonIcon, CurrencyCircleDollarIcon, FolderOpenIcon, UserIcon, XIcon } from "@phosphor-icons/react";
 
 const getCategoryStyles = (category: string) => {
   const cat = (category || "GENERAL").toUpperCase();
@@ -114,7 +114,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
   if (!user || !isAdmin) return null;
 
   return (
-    <div className="text-white font-mono relative">
+    <div className="text-white selection:bg-pink-600 selection:text-white font-mono relative">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12">
           <div className="mb-3">
@@ -149,7 +149,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
         </header>
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 border border-dashed border-white/10">
-            <Loader2 className="w-6 h-6 animate-spin text-white/20 mb-4" />
+            <CurrencyCircleDollarIcon className="w-6 h-6 animate-spin text-white/20 mb-4" />
           </div>
         ) : filteredFeedbacks.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px">
@@ -170,7 +170,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                     "{fb.content}"
                   </p>
                   <div className="mt-auto flex items-center gap-2 text-[11px] text-gray-500">
-                    <User2 size={14} /> {fb.email}
+                    <UserIcon size={14} /> {fb.email}
                   </div>
                 </div>
               );
@@ -178,7 +178,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
           </div>
         ) : (
           <div className="border-dashed border-2 border-white/10 bg-white/3 py-32 flex flex-col items-center justify-center">
-            <Inbox className="w-8 h-8 text-white/50 mb-4 stroke-[1px]" />
+            <FolderOpenIcon className="w-8 h-8 text-white/50 mb-4 stroke-[1px]" />
             <p className="text-[14px] uppercase tracking-[0.5em] text-white/50">
               Zero Records
             </p>
@@ -192,7 +192,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
               onClick={() => setSelectedFeedback(null)}
               className="absolute top-6 right-6 cursor-pointer z-10 text-white hover:text-rose-600 transition-colors bg-black p-1"
             >
-              <X size={24} />
+              <XIcon size={24} />
             </button>
             <div className="p-8 pb-4">
               <div
@@ -201,7 +201,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 {selectedFeedback.category || "General"}
               </div>
               <div className="text-gray-500 text-xs flex items-center gap-2">
-                <User2 size={14} /> {selectedFeedback.email}
+                <UserIcon size={14} /> {selectedFeedback.email}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-8 pt-0 custom-scrollbar">
@@ -211,7 +211,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 </p>
               </div>
               <p className="flex gap-2 items-center text-[14px] text-white/20 uppercase tracking-tighter">
-                <Clock size={15} />
+                <ClockAfternoonIcon size={15} />
                 {new Date(selectedFeedback.created_at).toLocaleString()}
               </p>
             </div>
@@ -222,7 +222,7 @@ export default function Feedbacks({ user }: { user: UserData }) {
                 className="flex-1 bg-white cursor-pointer text-black font-bold py-4 uppercase hover:bg-pink-600 hover:text-white transition-all flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {resolvingId === selectedFeedback.id && (
-                  <Loader2 size={18} className="animate-spin" />
+                  <CircleNotchIcon size={18} className="animate-spin" />
                 )}
                 {resolvingId === selectedFeedback.id
                   ? "Resolving..."

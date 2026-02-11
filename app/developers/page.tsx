@@ -1,17 +1,17 @@
 "use client";
 
-import { Cog, Github, Linkedin, Wrench } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { devData } from "@/lib/const";
-import { AnimatedButton } from "@/components/ui/animated-button";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  GithubLogoIcon,
+  LinkedinLogoIcon,
+} from "@phosphor-icons/react";
 
 const Developers = () => {
-  const router = useRouter();
   return (
     <div>
-      <div className="max-w-4xl mx-auto text-center mb-19.5 relative z-10">
+      <div className="max-w-4xl mx-auto selection:bg-orange-600 selection:text-white text-center mb-19.5 relative z-10">
         <h1 className="text-4xl md:text-4xl font-bold text-white tracking-tight">
           Built by Developers for Recruiters
         </h1>
@@ -25,7 +25,7 @@ const Developers = () => {
             <div className="flex flex-col items-center sm:items-start sm:flex-row gap-8">
               <div className="relative shrink-0">
                 <div
-                  className={`absolute -inset-1 bg-indigo-500 group-hover:opacity-100 opacity-20 transition-opacity rounded-[4rem]`}
+                  className={`absolute -inset-1 bg-orange-700 group-hover:opacity-100 opacity-20 transition-opacity rounded-[4rem]`}
                 ></div>
                 <Image
                   src={dev.image}
@@ -47,18 +47,18 @@ const Developers = () => {
                 <div className="flex gap-3">
                   <Button
                     variant="default"
-                    className="bg-white hover:bg-indigo-500 hover:text-white text-black rounded-none h-9 px-4 text-xs font-bold transition-all"
+                    className="bg-white hover:bg-orange-700 hover:text-white text-black rounded-none h-9 px-4 text-xs font-bold transition-all"
                     onClick={() => window.open(dev.github, "_blank")}
                   >
-                    <Github size={14} className="mr-2" />
+                    <GithubLogoIcon/>
                     GitHub
                   </Button>
                   <Button
                     variant="outline"
-                    className="bg-transparent text-white border-0 hover:bg-indigo-500 hover:text-white rounded-none h-9 px-4 text-xs font-bold transition-all"
+                    className="bg-transparent text-white border-0 hover:bg-orange-700 hover:text-white rounded-none h-9 px-4 text-xs font-bold transition-all"
                     onClick={() => window.open(dev.linkedin, "_blank")}
                   >
-                    <Linkedin size={14} className="mr-2 fill-white" />
+                    <LinkedinLogoIcon/>
                     LinkedIn
                   </Button>
                 </div>
@@ -66,31 +66,6 @@ const Developers = () => {
             </div>
           </div>
         ))}
-        <div className="bg-black w-fit flex items-center px-3 py-1.75">
-          <AnimatedButton
-            label="CONTRIBUTION"
-            onClick={() =>
-              window.open(
-                "https://github.com/drjayaswal/basal-docker.git",
-                "_blank",
-              )
-            }
-            Icon={Github}
-          />
-        </div>
-        <div className="bg-black w-fit flex items-center px-3 py-1.75">
-          <AnimatedButton
-            label="Settings"
-            onClick={() => router.push("/settings")}
-            Icon={Cog}
-            rotateIcon
-          />
-          <AnimatedButton
-            label="Services"
-            onClick={() => router.push("/services")}
-            Icon={Wrench}
-          />
-        </div>
       </div>
     </div>
   );

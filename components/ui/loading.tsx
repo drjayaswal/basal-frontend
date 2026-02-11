@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { CircleNotchIcon } from "@phosphor-icons/react";
 
 const Loading = () => {
   useEffect(() => {
@@ -29,7 +29,7 @@ const Loading = () => {
           transition={{ duration: 0.5 }}
           className="relative"
         >
-          <Loader2 className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} />
+          <CircleNotchIcon className="w-8 h-8 text-white animate-spin" strokeWidth={1.5} />
         </motion.div>
       </div>
     </div>

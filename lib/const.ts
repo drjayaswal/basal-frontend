@@ -16,3 +16,90 @@ export const devData = [
     bio: "Building the real-time Google Drive integration and the TSX dashboard architecture.",
   },
 ];
+
+export const navLinks = [
+  {
+    name: "Home",
+    href: "/",
+    color: "hover:bg-fuchsia-700",
+    tooltip: "Back To Home",
+  },
+  {
+    name: "Profile",
+    href: "/profile",
+    color: "hover:bg-lime-700",
+    tooltip: "User Profile",
+  },
+  {
+    name: "Services",
+    href: "/services",
+    color: "hover:bg-indigo-600",
+    tooltip: "View Features",
+  },
+  {
+    name: "Ingest",
+    href: "/ingest",
+    color: "hover:bg-violet-700",
+    tooltip: "Add Context",
+  },
+  {
+    name: "Conversations",
+    href: "/conversations",
+    color: "hover:bg-rose-700",
+    tooltip: "Talk to BAsAL",
+  },
+  {
+    name: "Feedback",
+    href: "/feedback",
+    color: "hover:bg-sky-700",
+    tooltip: "Submit Feedback",
+  },
+  {
+    name: "Developers",
+    href: "/developers",
+    color: "hover:bg-orange-700",
+    tooltip: "Meet Team",
+  },
+  {
+    name: "Frontend",
+    href: "https://github.com/drjayaswal/basal-frontend/blob/main/README.md",
+    color: "hover:bg-teal-700",
+    tooltip: "Client Repository",
+    isGrouped: true,
+    position: "start",
+  },
+  {
+    name: "Backend",
+    href: "https://github.com/drjayaswal/basal-backend/blob/main/README.md",
+    color: "hover:bg-teal-700",
+    tooltip: "Server Repository",
+    isGrouped: true,
+    position: "middle",
+  },
+  {
+    name: "ML Server",
+    href: "https://github.com/drjayaswal/basal-ml-server/blob/main/README.md",
+    color: "hover:bg-teal-700",
+    tooltip: "AI/ML Repository",
+    isGrouped: true,
+    position: "end",
+  },
+  {
+    name: "API Status",
+    href: `${process.env.NEXT_PUBLIC_BACKEND_URL}/docs`,
+    color: "hover:bg-pink-700",
+    tooltip: "API Documentation",
+  },
+  {
+    name: "Contribution",
+    href: "https://github.com/drjayaswal/basal-docker/blob/main/README.md#contributing",
+    color: "hover:bg-white hover:text-black",
+    tooltip: "Join Us",
+  },
+  {
+    name: "Upgrade",
+    href: "/upgrade",
+    color: "hover:bg-cyan-700",
+    tooltip: "Upgrade your plan",
+  },
+];
