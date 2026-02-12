@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Basal",
+  title: "Alluvium",
   description: "AI-driven utility to ensure fair and unbiased",
   icons: { icon: "/logo.png" },
 };

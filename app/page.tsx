@@ -44,7 +44,7 @@ export default function Main() {
       path: "/conversations",
       icon: ChatCircleDotsIcon,
       desc: "Talk to AI",
-      tooltip: "Talk to Basal",
+      tooltip: "Talk to Alluvium",
     },
     {
       label: "Services",
@@ -76,7 +76,7 @@ export default function Main() {
     },
     {
       label: "Codebase",
-      path: "https://github.com/drjayaswal/basal-docker.git/fork",
+      path: "https://github.com/drjayaswal/alluvium-docker.git/fork",
       icon: CodesandboxLogoIcon,
       desc: "Code",
       tooltip: "Fork Project",
@@ -84,7 +84,7 @@ export default function Main() {
     },
     {
       label: "Contribution",
-      path: "https://github.com/drjayaswal/basal-docker.git",
+      path: "https://github.com/drjayaswal/alluvium-docker.git",
       icon: GithubLogoIcon,
       external: true,
       desc: "Open Source",
@@ -109,7 +109,7 @@ export default function Main() {
               className="-mr-2"
             />
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white">
-              Basal<span className="text-fuchsia-600">™</span>
+              Alluvium<span className="text-fuchsia-600">™</span>
             </h1>
           </div>
           <p className="text-white/40 text-xs md:text-sm max-w-md leading-relaxed uppercase tracking-tight">

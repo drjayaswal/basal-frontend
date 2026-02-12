@@ -1,6 +1,6 @@
-# Basal Frontend
+# Alluvium Frontend
 
-A Next.js frontend application for Basal, designed to help identify and mitigate bias in decision-making processes.
+A Next.js frontend application for Alluvium, designed to help identify and mitigate bias in decision-making processes.
 
 ## Getting Started
 
@@ -15,8 +15,8 @@ A Next.js frontend application for Basal, designed to help identify and mitigate
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/drjayaswal/basal-frontend.git
-cd basal-frontend
+git clone https://github.com/drjayaswal/alluvium-frontend.git
+cd alluvium-frontend
 npm install
 # or
 yarn install
@@ -63,26 +63,26 @@ To build and push the Docker image providing the Google Client ID, use:
 ```bash
 docker build \
 --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=google-client-id \
--t dhruv2k3/basal-frontend:latest .
+-t dhruv2k3/alluvium-frontend:latest .
 ```
 ## Platform Independent MAC
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-id \
-  -t dhruv2k3/basal-frontend:latest \
+  -t dhruv2k3/alluvium-frontend:latest \
   --push .
 ```
 
 To test the image locally, use:
 ```bash
-docker run -p 3000:3000 dhruv2k3/basal-frontend
+docker run -p 3000:3000 dhruv2k3/alluvium-frontend
 ```
 
 
 To send new layers to docker hub, use:
 ```bash
-docker push dhruv2k3/basal-frontend:latest
+docker push dhruv2k3/alluvium-frontend:latest
 ```
 
 to run the docker container via docker-compose.yml, use:

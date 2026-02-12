@@ -1,13 +1,13 @@
 services:
   frontend:
-    image: dhruv2k3/basal-frontend:latest
+    image: dhruv2k3/alluvium-frontend:latest
     container_name: frontend
     ports:
       - "3000:3000"
     env_file:
       - .env
     networks:
-      - basal-net
+      - alluvium-net
 networks:
-  basal-net:
+  alluvium-net:
     driver: bridge

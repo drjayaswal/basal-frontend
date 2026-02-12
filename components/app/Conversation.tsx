@@ -348,7 +348,7 @@ const MessageEmptyState = ({ hasSources, onSetInput }: { hasSources: boolean; on
     <div className="h-full flex flex-col items-center justify-center p-8 animate-in fade-in zoom-in-95 duration-700">
       <div className="text-center max-w-sm flex flex-col items-center">
         <Image className="mb-6 opacity-80 grayscale hover:grayscale-0 transition-all duration-500" src="/logo.png" alt="logo" width={60} height={60} />
-        <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">Basal•AI</h3>
+        <h3 className="text-xl font-bold text-white tracking-[0.4em] uppercase">Alluvium•AI</h3>
         <div className="h-1 my-1 w-full bg-rose-700/50" />
       </div>
       <div className="mt-6 w-full max-w-md border border-white/10">

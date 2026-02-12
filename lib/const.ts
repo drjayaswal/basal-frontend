@@ -46,7 +46,7 @@ export const navLinks = [
     name: "Conversations",
     href: "/conversations",
     color: "hover:bg-rose-700",
-    tooltip: "Talk to BAsAL",
+    tooltip: "Talk to Alluvium",
   },
   {
     name: "Feedback",
@@ -62,7 +62,7 @@ export const navLinks = [
   },
   {
     name: "Frontend",
-    href: "https://github.com/drjayaswal/basal-frontend/blob/main/README.md",
+    href: "https://github.com/drjayaswal/alluvium-frontend/blob/main/README.md",
     color: "hover:bg-teal-700",
     tooltip: "Client Repository",
     isGrouped: true,
@@ -70,7 +70,7 @@ export const navLinks = [
   },
   {
     name: "Backend",
-    href: "https://github.com/drjayaswal/basal-backend/blob/main/README.md",
+    href: "https://github.com/drjayaswal/alluvium-backend/blob/main/README.md",
     color: "hover:bg-teal-700",
     tooltip: "Server Repository",
     isGrouped: true,
@@ -78,7 +78,7 @@ export const navLinks = [
   },
   {
     name: "ML Server",
-    href: "https://github.com/drjayaswal/basal-ml-server/blob/main/README.md",
+    href: "https://github.com/drjayaswal/alluvium-ml-server/blob/main/README.md",
     color: "hover:bg-teal-700",
     tooltip: "AI/ML Repository",
     isGrouped: true,
@@ -92,7 +92,7 @@ export const navLinks = [
   },
   {
     name: "Contribution",
-    href: "https://github.com/drjayaswal/basal-docker/blob/main/README.md#contributing",
+    href: "https://github.com/drjayaswal/alluvium-docker/blob/main/README.md#contributing",
     color: "hover:bg-white hover:text-black",
     tooltip: "Join Us",
   },
